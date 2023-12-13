@@ -5,10 +5,16 @@ import 'package:stacked_services/stacked_services.dart';
 
 class SplashViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
+  bool isSignedIn = false;
 
   initialize() {
     Future.delayed(const Duration(seconds: 2), () {
-      _navigationService.clearStackAndShow(Routes.homeViewRoute);
+      if (isSignedIn) {
+        // _navigationService.clearStackAndShow(Routes.registerViewRoute);
+        _navigationService.clearStackAndShow(Routes.homeViewRoute);
+      } else {
+        _navigationService.clearStackAndShow(Routes.loginViewRoute);
+      }
     });
   }
 }

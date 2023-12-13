@@ -9,8 +9,17 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
-        builder: (context, model, child) => const Scaffold(
-              body: Center(child: Text("your are at home!")),
+        builder: (context, model, child) => Scaffold(
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    const Text("HOME"),
+                    ElevatedButton(
+                        onPressed: () => model.logout(),
+                        child: const Text("Logout"))
+                  ],
+                ),
+              ),
             ),
         viewModelBuilder: () => HomeViewModel());
   }
