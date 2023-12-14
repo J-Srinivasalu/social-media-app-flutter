@@ -5,19 +5,24 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i6;
+import 'package:flutter/material.dart' as _i7;
 import 'package:flutter/material.dart';
-import 'package:social_media_app/views/home/home_view.dart' as _i3;
-import 'package:social_media_app/views/login/login_view.dart' as _i4;
-import 'package:social_media_app/views/register/register_view.dart' as _i5;
+import 'package:social_media_app/views/create_post/create_post_view.dart'
+    as _i4;
+import 'package:social_media_app/views/login/login_view.dart' as _i5;
+import 'package:social_media_app/views/main_navigation/bottom_navbar_view.dart'
+    as _i3;
+import 'package:social_media_app/views/register/register_view.dart' as _i6;
 import 'package:social_media_app/views/splash/splash_view.dart' as _i2;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i7;
+import 'package:stacked_services/stacked_services.dart' as _i8;
 
 class Routes {
   static const splashView = '/';
 
-  static const homeViewRoute = '/home-view';
+  static const bottomNavbarViewRoute = '/bottom-navbar-view';
+
+  static const createPostViewRoute = '/create-post-view';
 
   static const loginViewRoute = '/login-view';
 
@@ -25,7 +30,8 @@ class Routes {
 
   static const all = <String>{
     splashView,
-    homeViewRoute,
+    bottomNavbarViewRoute,
+    createPostViewRoute,
     loginViewRoute,
     registerViewRoute,
   };
@@ -38,41 +44,53 @@ class StackedRouter extends _i1.RouterBase {
       page: _i2.SplashView,
     ),
     _i1.RouteDef(
-      Routes.homeViewRoute,
-      page: _i3.HomeView,
+      Routes.bottomNavbarViewRoute,
+      page: _i3.BottomNavbarView,
+    ),
+    _i1.RouteDef(
+      Routes.createPostViewRoute,
+      page: _i4.CreatePostView,
     ),
     _i1.RouteDef(
       Routes.loginViewRoute,
-      page: _i4.LoginView,
+      page: _i5.LoginView,
     ),
     _i1.RouteDef(
       Routes.registerViewRoute,
-      page: _i5.RegisterView,
+      page: _i6.RegisterView,
     ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i6.MaterialPageRoute<dynamic>(
+      return _i7.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.SplashView(),
         settings: data,
       );
     },
-    _i3.HomeView: (data) {
-      return _i6.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i3.HomeView(),
+    _i3.BottomNavbarView: (data) {
+      final args = data.getArgs<BottomNavbarViewArguments>(nullOk: false);
+      return _i7.MaterialPageRoute<dynamic>(
+        builder: (context) =>
+            _i3.BottomNavbarView(key: args.key, viewIndex: args.viewIndex),
         settings: data,
       );
     },
-    _i4.LoginView: (data) {
-      return _i6.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i4.LoginView(),
+    _i4.CreatePostView: (data) {
+      return _i7.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i4.CreatePostView(),
         settings: data,
       );
     },
-    _i5.RegisterView: (data) {
-      return _i6.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i5.RegisterView(),
+    _i5.LoginView: (data) {
+      return _i7.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i5.LoginView(),
+        settings: data,
+      );
+    },
+    _i6.RegisterView: (data) {
+      return _i7.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i6.RegisterView(),
         settings: data,
       );
     },
@@ -85,7 +103,34 @@ class StackedRouter extends _i1.RouterBase {
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
 }
 
-extension NavigatorStateExtension on _i7.NavigationService {
+class BottomNavbarViewArguments {
+  const BottomNavbarViewArguments({
+    this.key,
+    required this.viewIndex,
+  });
+
+  final _i7.Key? key;
+
+  final int viewIndex;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "viewIndex": "$viewIndex"}';
+  }
+
+  @override
+  bool operator ==(covariant BottomNavbarViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.viewIndex == viewIndex;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ viewIndex.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i8.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -100,14 +145,31 @@ extension NavigatorStateExtension on _i7.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToHomeViewRoute([
+  Future<dynamic> navigateToBottomNavbarViewRoute({
+    _i7.Key? key,
+    required int viewIndex,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.bottomNavbarViewRoute,
+        arguments: BottomNavbarViewArguments(key: key, viewIndex: viewIndex),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToCreatePostViewRoute([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   ]) async {
-    return navigateTo<dynamic>(Routes.homeViewRoute,
+    return navigateTo<dynamic>(Routes.createPostViewRoute,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -156,14 +218,31 @@ extension NavigatorStateExtension on _i7.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithHomeViewRoute([
+  Future<dynamic> replaceWithBottomNavbarViewRoute({
+    _i7.Key? key,
+    required int viewIndex,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.bottomNavbarViewRoute,
+        arguments: BottomNavbarViewArguments(key: key, viewIndex: viewIndex),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithCreatePostViewRoute([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   ]) async {
-    return replaceWith<dynamic>(Routes.homeViewRoute,
+    return replaceWith<dynamic>(Routes.createPostViewRoute,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

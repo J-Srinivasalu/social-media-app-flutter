@@ -6,3 +6,4 @@ This app is part of the complete solution i'm building consisting a expressjs ba
 
 - Login view
 - Register view
+- Bottom Navbar view
