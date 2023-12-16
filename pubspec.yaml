@@ -14,6 +14,7 @@ dependencies:
   stacked:
   stacked_services:
   fluttertoast: ^8.2.4
+  cached_network_image: ^3.2.3
 
   cupertino_icons: ^1.0.2
 

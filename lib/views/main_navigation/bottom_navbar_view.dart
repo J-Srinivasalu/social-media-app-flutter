@@ -25,6 +25,18 @@ class BottomNavbarView extends StatelessWidget {
           : WillPopScope(
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
+                appBar: AppBar(
+                  elevation: 2,
+                  title: const Text(
+                    "SMA",
+                    style: TextStyle(color: CustomColors.primaryColor),
+                  ),
+                  actions: [
+                    IconButton(
+                        onPressed: () => {},
+                        icon: const Icon(Icons.notifications))
+                  ],
+                ),
                 body: IndexedStack(
                   index: model.index,
                   children: [
