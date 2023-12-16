@@ -3,13 +3,13 @@ class User {
   String? id;
   String? email;
   String fullName;
-  String username;
+  String? username;
   String? profileImage;
   User({
     this.id,
     this.email,
     required this.fullName,
-    required this.username,
+    this.username,
     this.profileImage,
   });
 }

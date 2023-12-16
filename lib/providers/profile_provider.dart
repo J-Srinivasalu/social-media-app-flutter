@@ -22,6 +22,13 @@ class ProfileProvider extends ChangeNotifier {
     _profileImage = user.profileImage;
   }
 
+  void updateProfile(User user) {
+    if (user.profileImage != null) {
+      _profileImage = user.profileImage;
+    }
+    _fullName = user.fullName;
+  }
+
   User toUser() {
     return User(fullName: fullName!, username: username!);
   }

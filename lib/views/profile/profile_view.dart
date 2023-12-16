@@ -12,7 +12,7 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _profileProvider = Provider.of<ProfileProvider>(context);
+    final profileProvider = Provider.of<ProfileProvider>(context);
     return ViewModelBuilder<ProfileViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
               body: Column(
@@ -34,9 +34,9 @@ class ProfileView extends StatelessWidget {
                           decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: CustomColors.primaryColor),
-                          child: _profileProvider.profileImage != null
+                          child: profileProvider.profileImage != null
                               ? CachedNetworkImage(
-                                  imageUrl: _profileProvider.profileImage!,
+                                  imageUrl: profileProvider.profileImage!,
                                   width: 75,
                                   height: 75,
                                   fit: BoxFit.cover,
@@ -55,14 +55,14 @@ class ProfileView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                _profileProvider.fullName!,
+                                profileProvider.fullName!,
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
                               Text(
-                                _profileProvider.username!,
+                                profileProvider.username!,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: CustomColors.darkGreyColor,
@@ -72,7 +72,7 @@ class ProfileView extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () => model.navigateToEditProfile(),
                           icon: const Icon(
                             Icons.edit_outlined,
                             color: CustomColors.primaryColor,

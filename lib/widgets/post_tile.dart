@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/models/post.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
+import 'package:social_media_app/views/home/single_post_view.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class PostTile extends StatelessWidget {
   final Post post;
@@ -13,108 +16,112 @@ class PostTile extends StatelessWidget {
     return ViewModelBuilder<PostTileViewModel>.reactive(
       builder: (context, model, child) => Column(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 60,
-                  width: 60,
-                  margin: const EdgeInsets.only(right: 8),
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: CustomColors.primaryColor),
-                  child: IconButton(
-                    onPressed: () => {},
-                    icon: const Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 40,
+          InkWell(
+            onTap: () => model.navigateToSinglePost(post),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 60,
+                    width: 60,
+                    margin: const EdgeInsets.only(right: 8),
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: CustomColors.primaryColor),
+                    child: IconButton(
+                      onPressed: () => {},
+                      icon: const Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: 40,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        child: Row(
-                          children: [
-                            Text(
-                              post.user.fullName,
-                              maxLines: 1,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  overflow: TextOverflow.ellipsis),
-                            ),
-                            const Text(
-                              " · ",
-                              style: TextStyle(
-                                  color: CustomColors.greyColor,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              model.timePassed,
-                              style: const TextStyle(
-                                  color: CustomColors.greyColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        post.content,
-                        maxLines: 10,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      if (post.media.isNotEmpty)
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
                         Container(
-                          margin: const EdgeInsets.symmetric(vertical: 4),
-                          height: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: post.media.length,
-                            itemBuilder: (context, index) => Container(
-                              margin: const EdgeInsets.all(2),
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          child: Row(
+                            children: [
+                              Text(
+                                post.user.fullName,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    overflow: TextOverflow.ellipsis),
                               ),
-                              child: CachedNetworkImage(
-                                imageUrl: post.media[index],
-                                fit: BoxFit.contain,
+                              const Text(
+                                " · ",
+                                style: TextStyle(
+                                    color: CustomColors.greyColor,
+                                    fontWeight: FontWeight.w700),
                               ),
-                            ),
+                              Text(
+                                model.timePassed,
+                                style: const TextStyle(
+                                    color: CustomColors.greyColor),
+                              ),
+                            ],
                           ),
                         ),
-                      Container(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.favorite_border,
-                              color: CustomColors.greyColor,
-                            ),
-                            Text(post.likes.length.toString()),
-                            const SizedBox(
-                              width: 12,
-                            ),
-                            const Icon(
-                              Icons.chat_outlined,
-                              color: CustomColors.greyColor,
-                            ),
-                            Text(post.comments.length.toString()),
-                          ],
+                        Text(
+                          post.content,
+                          maxLines: 10,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      )
-                    ],
-                  ),
-                )
-              ],
+                        if (post.media.isNotEmpty)
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            height: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: post.media.length,
+                              itemBuilder: (context, index) => Container(
+                                margin: const EdgeInsets.all(2),
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: post.media[index],
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.favorite_border,
+                                color: CustomColors.greyColor,
+                              ),
+                              Text(post.likes.length.toString()),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              const Icon(
+                                Icons.chat_outlined,
+                                color: CustomColors.greyColor,
+                              ),
+                              Text(post.comments.length.toString()),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           const Divider(
@@ -129,6 +136,7 @@ class PostTile extends StatelessWidget {
 }
 
 class PostTileViewModel extends BaseViewModel {
+  final _navigationService = locator<NavigationService>();
   String timePassed = "0s";
 
   void initialize(Post post) {
@@ -153,6 +161,10 @@ class PostTileViewModel extends BaseViewModel {
     } else {
       return '0s';
     }
+  }
+
+  void navigateToSinglePost(Post post) {
+    _navigationService.navigateToView(SinglePostView(post: post));
   }
 
   String _getMonthAbbreviation(int month) {
