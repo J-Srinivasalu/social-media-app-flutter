@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/app/app.locator.dart';
-import 'package:social_media_app/app/app.router.dart';
+import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/providers/post_provider.dart';
+import 'package:social_media_app/providers/profile_provider.dart';
+import 'package:social_media_app/utils/dummy_data.dart';
 import 'package:social_media_app/views/create_post/create_post_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -13,8 +17,15 @@ class BottomNavbarViewModel extends BaseViewModel {
 
   int index = 0;
 
-  void initialize(int viewIndex) {
+  void initialize(int viewIndex, ProfileProvider profileProvider,
+      PostProvider postProvider) {
     switchScreen(viewIndex);
+
+    profileProvider.setProfile(
+      User(fullName: "Jack", username: "@jack"),
+    );
+    List<Post> posts = DummyData.posts;
+    postProvider.addPosts(posts);
   }
 
   void switchScreen(int i) {

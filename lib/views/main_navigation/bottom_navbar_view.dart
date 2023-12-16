@@ -2,6 +2,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:social_media_app/providers/post_provider.dart';
+import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
 import 'package:social_media_app/views/home/home_view.dart';
 import 'package:social_media_app/views/profile/profile_view.dart';
@@ -19,6 +22,8 @@ class BottomNavbarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final postProvider = Provider.of<PostProvider>(context);
+    final profileProvider = Provider.of<ProfileProvider>(context);
     return ViewModelBuilder<BottomNavbarViewModel>.reactive(
       builder: (context, model, child) => model.isBusy
           ? const Scaffold(backgroundColor: Colors.white)
@@ -107,7 +112,8 @@ class BottomNavbarView extends StatelessWidget {
               onWillPop: () => _onBackPressed(model, context),
             ),
       viewModelBuilder: () => BottomNavbarViewModel(),
-      onViewModelReady: (model) => model.initialize(viewIndex),
+      onViewModelReady: (model) =>
+          model.initialize(viewIndex, profileProvider, postProvider),
     );
   }
 }

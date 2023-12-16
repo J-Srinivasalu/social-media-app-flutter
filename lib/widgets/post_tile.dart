@@ -67,29 +67,30 @@ class PostTile extends StatelessWidget {
                         maxLines: 10,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                        height: 200,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: post.media.length,
-                          itemBuilder: (context, index) => Container(
-                            margin: const EdgeInsets.all(2),
-                            clipBehavior: Clip.hardEdge,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: CachedNetworkImage(
-                              imageUrl: post.media[index],
-                              fit: BoxFit.contain,
+                      if (post.media.isNotEmpty)
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          height: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: post.media.length,
+                            itemBuilder: (context, index) => Container(
+                              margin: const EdgeInsets.all(2),
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: post.media[index],
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ),
-                      ),
                       Container(
                         padding: const EdgeInsets.only(top: 8),
                         child: Row(

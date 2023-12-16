@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/app/app.router.dart';
 import 'package:social_media_app/models/helpers/flavor_config.dart';
+import 'package:social_media_app/providers/post_provider.dart';
+import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/services/environment_service.dart';
 import 'package:social_media_app/utils/constants.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
@@ -25,20 +28,28 @@ class SocialMediaApp extends StatelessWidget {
   static const primaryColor = CustomColors.blueDarkestColor;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Social Media App',
-      navigatorKey: StackedService.navigatorKey,
-      onGenerateRoute: StackedRouter().onGenerateRoute,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ProfileProvider>(
+            create: ((context) => ProfileProvider())),
+        ChangeNotifierProvider<PostProvider>(
+            create: ((context) => PostProvider())),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Social Media App',
+        navigatorKey: StackedService.navigatorKey,
+        onGenerateRoute: StackedRouter().onGenerateRoute,
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(color: Colors.black),
+          ),
+          useMaterial3: true,
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          primaryColor: primaryColor,
         ),
-        useMaterial3: true,
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        primaryColor: primaryColor,
       ),
     );
   }
