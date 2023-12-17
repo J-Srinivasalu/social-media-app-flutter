@@ -7,6 +7,7 @@ import 'package:social_media_app/views/home/single_post_view.dart';
 import 'package:social_media_app/views/login/login_view.dart';
 import 'package:social_media_app/views/main_navigation/bottom_navbar_view.dart';
 import 'package:social_media_app/views/profile/edit_profile_view.dart';
+import 'package:social_media_app/views/public_profile/public_profile_view.dart';
 import 'package:social_media_app/views/register/register_view.dart';
 import 'package:social_media_app/views/splash/splash_view.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -20,6 +21,7 @@ import 'package:stacked_services/stacked_services.dart';
   MaterialRoute(page: RegisterView, name: 'registerViewRoute'),
   MaterialRoute(page: SinglePostView, name: 'singlePostViewRoute'),
   MaterialRoute(page: EditProfileView, name: 'editProfileViewRoute'),
+  MaterialRoute(page: PublicProfileView, name: 'pulicProfileViewRoute'),
 ], dependencies: [
   LazySingleton(classType: EnvironmentService),
   LazySingleton(classType: NavigationService),

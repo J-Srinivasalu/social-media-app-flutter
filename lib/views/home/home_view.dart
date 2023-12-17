@@ -17,8 +17,10 @@ class HomeView extends StatelessWidget {
         body: SafeArea(
           child: ListView.builder(
             itemCount: _postProvider.posts.length,
-            itemBuilder: (context, index) =>
-                PostTile(post: _postProvider.posts[index]),
+            itemBuilder: (context, index) => PostTile(
+              post: _postProvider.posts[index],
+              fromHome: true,
+            ),
           ),
         ),
       ),

@@ -1,18 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/providers/post_provider.dart';
+import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
+import 'package:social_media_app/utils/helper_functions.dart';
 import 'package:social_media_app/views/home/single_post_view.dart';
+import 'package:social_media_app/views/public_profile/public_profile_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class PostTile extends StatelessWidget {
   final Post post;
-  const PostTile({super.key, required this.post});
+  final bool fromHome;
+  const PostTile({super.key, required this.post, required this.fromHome});
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
+    final postProvider = Provider.of<PostProvider>(context);
     return ViewModelBuilder<PostTileViewModel>.reactive(
       builder: (context, model, child) => Column(
         children: [
@@ -23,21 +32,30 @@ class PostTile extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 60,
-                    width: 60,
-                    margin: const EdgeInsets.only(right: 8),
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: CustomColors.primaryColor),
-                    child: IconButton(
-                      onPressed: () => {},
-                      icon: const Icon(
+                  InkWell(
+                    borderRadius: BorderRadius.circular(30),
+                    splashColor: CustomColors.blueLightColor,
+                    onTap: () {
+                      if (fromHome) {
+                        model.navigateToPublicProfile(post.user);
+                      }
+                    },
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      margin: const EdgeInsets.all(2),
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: CustomColors.primaryColor),
+                      child: const Icon(
                         Icons.person,
                         color: Colors.white,
                         size: 40,
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    width: 8,
                   ),
                   Expanded(
                     child: Column(
@@ -101,9 +119,18 @@ class PostTile extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 8),
                           child: Row(
                             children: [
-                              const Icon(
-                                Icons.favorite_border,
-                                color: CustomColors.greyColor,
+                              IconButton(
+                                onPressed: () => model.likePost(
+                                    post, profileProvider.username),
+                                icon: Icon(
+                                  !post.likes.contains(profileProvider.username)
+                                      ? Icons.thumb_up_alt_outlined
+                                      : Icons.thumb_up,
+                                  color: !post.likes
+                                          .contains(profileProvider.username)
+                                      ? CustomColors.greyColor
+                                      : CustomColors.primaryColor,
+                                ),
                               ),
                               Text(post.likes.length.toString()),
                               const SizedBox(
@@ -145,43 +172,24 @@ class PostTileViewModel extends BaseViewModel {
     timePassed = getTimePassed(post.createdAt);
   }
 
-  String getTimePassed(DateTime? dateTime) {
-    if (dateTime == null) return "0s";
-    DateTime now = DateTime.now();
-    Duration difference = now.difference(dateTime);
-
-    if (difference.inDays > 6) {
-      return '${dateTime.day.toString().padLeft(2, '0')} ${_getMonthAbbreviation(dateTime.month)}';
-    } else if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
+  void likePost(Post post, String? username) {
+    if (username == null) return;
+    if (!post.likes.contains(username)) {
+      post.likes.add(username);
     } else {
-      return '0s';
+      post.likes.removeWhere((element) => element == username);
     }
+    notifyListeners();
   }
 
   void navigateToSinglePost(Post post) {
     _navigationService.navigateToView(SinglePostView(post: post));
   }
 
-  String _getMonthAbbreviation(int month) {
-    const monthAbbreviations = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ];
-    return monthAbbreviations[month - 1];
+  void navigateToPublicProfile(User user) {
+    debugPrint("before profile");
+    _navigationService
+        .navigateToView(PublicProfileView(userPublicProfile: user));
+    debugPrint("pbulic profile");
   }
 }

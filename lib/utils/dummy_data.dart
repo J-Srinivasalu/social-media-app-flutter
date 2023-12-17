@@ -1,3 +1,4 @@
+import 'package:social_media_app/models/comment.dart';
 import 'package:social_media_app/models/post.dart';
 import 'package:social_media_app/models/user.dart';
 
@@ -12,7 +13,18 @@ class DummyData {
         'https://images.freeimages.com/images/large-previews/d4f/www-1242368.jpg'
       ],
       likes: ['user2'],
-      comments: ['comment1', 'comment2'],
+      comments: [
+        Comment(
+          content: "comment 1",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 2",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+      ],
       updatedAt: DateTime.now().subtract(const Duration(hours: 2)),
       createdAt: DateTime.now().subtract(const Duration(hours: 2)),
     ),
@@ -26,7 +38,18 @@ class DummyData {
         'https://images.freeimages.com/images/large-previews/d4f/www-1242368.jpg'
       ],
       likes: ['user3', 'user4', 'user4', 'user4', 'user4'],
-      comments: ['comment3', 'comment4'],
+      comments: [
+        Comment(
+          content: "comment 1",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 2",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+      ],
       updatedAt: DateTime.now().subtract(const Duration(minutes: 30)),
       createdAt: DateTime.now().subtract(const Duration(days: 8)),
     ),
@@ -40,7 +63,18 @@ class DummyData {
         'https://images.freeimages.com/images/large-previews/d4f/www-1242368.jpg'
       ],
       likes: ['user1', 'user2', 'user4'],
-      comments: ['comment1', 'comment2'],
+      comments: [
+        Comment(
+          content: "comment 1",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 2",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+      ],
       updatedAt: DateTime.now().subtract(const Duration(hours: 2)),
       createdAt: DateTime.now().subtract(const Duration(days: 1)),
     ),
@@ -54,7 +88,28 @@ class DummyData {
         'https://images.freeimages.com/images/large-previews/d4f/www-1242368.jpg'
       ],
       likes: ['user3', 'user4'],
-      comments: ['comment3', 'comment4', 'user4', 'user4', 'user4', 'user4'],
+      comments: [
+        Comment(
+          content: "comment 1",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 2",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 1",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 2",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+      ],
       updatedAt: DateTime.now().subtract(const Duration(minutes: 30)),
       createdAt: DateTime.now().subtract(const Duration(days: 8)),
     ),
@@ -76,7 +131,18 @@ Sunt amet commodo est cillum culpa quis mollit ipsum tempor ex excepteur. Aliqui
         'https://images.freeimages.com/images/large-previews/d4f/www-1242368.jpg'
       ],
       likes: ['user1', 'user2'],
-      comments: ['comment1', 'comment2'],
+      comments: [
+        Comment(
+          content: "comment 1",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 2",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+      ],
       updatedAt: DateTime.now().subtract(const Duration(hours: 2)),
       createdAt: DateTime.now().subtract(const Duration(days: 1)),
     ),
@@ -90,7 +156,38 @@ Sunt amet commodo est cillum culpa quis mollit ipsum tempor ex excepteur. Aliqui
         'https://images.freeimages.com/images/large-previews/d4f/www-1242368.jpg'
       ],
       likes: ['user3', 'user4'],
-      comments: ['comment3', 'comment4'],
+      comments: [
+        Comment(
+          content: "comment 1",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 2",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 1",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 2",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 1",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+        Comment(
+          content: "comment 2",
+          user: User(fullName: "Jackson", username: "@Jackson"),
+          likes: [],
+        ),
+      ],
       updatedAt: DateTime.now().subtract(const Duration(minutes: 30)),
       createdAt: DateTime.now().subtract(const Duration(days: 8)),
     ),
