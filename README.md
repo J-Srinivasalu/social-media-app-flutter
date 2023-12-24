@@ -97,14 +97,14 @@ flutter run --flavor dev -t lib/main_dev.dart
 
 |        Login Screen         |        Register Screen         |   Main Navigations(Home)   |   Main Navigations(Profile)   |
 | :-------------------------: | :----------------------------: | :------------------------: | :---------------------------: |
-| ![](screenshots/login.jpeg) | ![](screenshots/register.jpeg) | ![](screenshots/home.jpeg) | ![](screenshots/profile.jpeg) |
+| <img src="screenshots/login.jpeg" alt="Login Screen" width="200"/> | <img src="screenshots/register.jpeg" alt="Register Screen" width="200"/> | <img src="screenshots/home.jpeg" alt="Home Screen" width="200"/> | <img src="screenshots/profile.jpeg" alt="Profile Screen" width="200"/> |
 
 |        Post Screen         |        Public Profile Screen         |        Create Post Screen         |        Create Post section         |
 | :------------------------: | :----------------------------------: | :-------------------------------: | :--------------------------------: |
-| ![](screenshots/post.jpeg) | ![](screenshots/public_profile.jpeg) | ![](screenshots/create_post.jpeg) | ![](screenshots/select_image.jpeg) |
+| <img src="screenshots/post.jpeg" alt="Post Screen" width="200"/> | <img src="screenshots/public_profile.jpeg" alt="Public profile Screen" width="200"/> | <img src="screenshots/create_post.jpeg" alt="Create Post Screen" width="200"/> | <img src="screenshots/select_image.jpeg" alt="Select Image Screen" width="200"/> |
 
 |        Edit profile Screen         |
 | :--------------------------------: |
-| ![](screenshots/edit_profile.jpeg) |
+| <img src="screenshots/edit_profile.jpeg" alt="Edit Profile Screen" width="200"/> |
 
 Feel free to reach out for any questions or feedback. Happy coding!
