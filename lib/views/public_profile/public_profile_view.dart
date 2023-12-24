@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
 import 'package:social_media_app/widgets/post_tile.dart';
+import 'package:social_media_app/widgets/refresh_widget.dart';
 import 'package:stacked/stacked.dart';
 
 import 'public_profile_viewmodel.dart';
@@ -41,28 +44,34 @@ class PublicProfileView extends StatelessWidget {
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: CustomColors.primaryColor),
-                    child: model.user.profileImage != null
-                        ? CachedNetworkImage(
-                            imageUrl: model.user.profileImage!,
-                            width: 75,
-                            height: 75,
-                            fit: BoxFit.cover,
-                          )
-                        : IconButton(
-                            onPressed: () => {},
-                            icon: const Icon(
-                              Icons.person,
-                              color: Colors.white,
-                              size: 40,
-                            ),
+                    child: CachedNetworkImage(
+                      imageUrl: model.user.profilePic!,
+                      width: 75,
+                      height: 75,
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: 50,
+                      ),
+                      progressIndicatorBuilder: (context, url, progress) {
+                        return Container(
+                          width: 40,
+                          height: 40,
+                          alignment: Alignment.center,
+                          child: const CircularProgressIndicator(
+                            color: CustomColors.whiteColor,
                           ),
+                        );
+                      },
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          model.user.fullName,
+                          model.user.fullName ?? "",
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -98,11 +107,29 @@ class PublicProfileView extends StatelessWidget {
               thickness: 2,
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: model.posts.length,
-                itemBuilder: (context, index) => PostTile(
-                  post: model.posts[index],
-                  fromHome: false,
+              child: LoadingOverlay(
+                isLoading: model.isBusy,
+                progressIndicator: const CircularProgressIndicator(),
+                color: Colors.black,
+                opacity: 0.2,
+                child: SmartRefresher(
+                  enablePullDown: false,
+                  enablePullUp: true,
+                  controller: model.postRefreshController,
+                  footer: const RefreshWidget(),
+                  onLoading: () async {
+                    if (!model.isBusy) {
+                      await model.fetchPosts();
+                    }
+                  },
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: model.posts.length,
+                    itemBuilder: (context, index) => PostTile(
+                      post: model.posts[index],
+                      fromHome: false,
+                    ),
+                  ),
                 ),
               ),
             )

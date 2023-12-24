@@ -7,5 +7,8 @@ void main() {
   mainCommon(FlavorConfig()
     ..appTitle = "Social media app"
     ..flavorType = FlavorType.PROD
-    ..apiEndpoint = {Endpoints.SERVER_URL: "", Endpoints.SENTRY_URL: ""});
+    ..apiEndpoint = {
+      Endpoints.SERVER_URL: "https://social-media-app-l597.onrender.com",
+      Endpoints.SENTRY_URL: ""
+    });
 }

@@ -16,6 +16,13 @@ dependencies:
   fluttertoast: ^8.2.4
   cached_network_image: ^3.2.3
   provider: ^6.1.1
+  shared_preferences: ^2.2.2
+  loading_overlay: ^0.3.0
+  http: ^0.13.6
+  pull_to_refresh: ^2.0.0
+  image_picker: ^1.0.4
+  path:
+  mime: ^1.0.4
 
   cupertino_icons: ^1.0.2
 

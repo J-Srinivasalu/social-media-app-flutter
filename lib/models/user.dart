@@ -1,15 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 class User {
   String? id;
-  String? email;
-  String fullName;
+  String? fullName;
   String? username;
-  String? profileImage;
+  String? profilePic;
   User({
     this.id,
-    this.email,
-    required this.fullName,
+    this.fullName,
     this.username,
-    this.profileImage,
+    this.profilePic,
   });
+
+  factory User.fromJson(String str) => User.fromMap(json.decode(str));
+
+  factory User.fromMap(Map<String, dynamic> json) => User(
+        id: json["_id"],
+        fullName: json["fullName"],
+        username: json["username"],
+        profilePic: json["profilePic"],
+      );
 }

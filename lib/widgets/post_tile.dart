@@ -6,6 +6,8 @@ import 'package:social_media_app/models/post.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/post_provider.dart';
 import 'package:social_media_app/providers/profile_provider.dart';
+import 'package:social_media_app/services/api_service.dart';
+import 'package:social_media_app/services/toast_service.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
 import 'package:social_media_app/utils/helper_functions.dart';
 import 'package:social_media_app/views/home/single_post_view.dart';
@@ -43,14 +45,31 @@ class PostTile extends StatelessWidget {
                     child: Container(
                       height: 60,
                       width: 60,
+                      clipBehavior: Clip.hardEdge,
                       margin: const EdgeInsets.all(2),
                       decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: CustomColors.primaryColor),
-                      child: const Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 40,
+                      child: CachedNetworkImage(
+                        imageUrl: post.user?.profilePic ?? "",
+                        errorWidget: (context, url, error) => const Icon(
+                          Icons.person,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                        progressIndicatorBuilder: (context, url, progress) {
+                          return Container(
+                            width: 30,
+                            height: 30,
+                            alignment: Alignment.center,
+                            child: const CircularProgressIndicator(
+                              color: CustomColors.whiteColor,
+                            ),
+                          );
+                        },
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -66,7 +85,7 @@ class PostTile extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                                post.user.fullName,
+                                post.user?.fullName ?? "",
                                 maxLines: 1,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -87,11 +106,11 @@ class PostTile extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          post.content,
+                          post.content ?? "",
                           maxLines: 10,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        if (post.media.isNotEmpty)
+                        if (post.medias.isNotEmpty)
                           Container(
                             margin: const EdgeInsets.symmetric(vertical: 4),
                             height: 200,
@@ -101,7 +120,7 @@ class PostTile extends StatelessWidget {
                             child: ListView.builder(
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
-                              itemCount: post.media.length,
+                              itemCount: post.medias.length,
                               itemBuilder: (context, index) => Container(
                                 margin: const EdgeInsets.all(2),
                                 clipBehavior: Clip.hardEdge,
@@ -109,7 +128,7 @@ class PostTile extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: CachedNetworkImage(
-                                  imageUrl: post.media[index],
+                                  imageUrl: post.medias[index],
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -121,15 +140,15 @@ class PostTile extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () => model.likePost(
-                                    post, profileProvider.username),
+                                    postProvider, post, profileProvider.id),
                                 icon: Icon(
-                                  !post.likes.contains(profileProvider.username)
+                                  !post.likes.contains(profileProvider.id)
                                       ? Icons.thumb_up_alt_outlined
                                       : Icons.thumb_up,
-                                  color: !post.likes
-                                          .contains(profileProvider.username)
-                                      ? CustomColors.greyColor
-                                      : CustomColors.primaryColor,
+                                  color:
+                                      !post.likes.contains(profileProvider.id)
+                                          ? CustomColors.greyColor
+                                          : CustomColors.primaryColor,
                                 ),
                               ),
                               Text(post.likes.length.toString()),
@@ -140,7 +159,7 @@ class PostTile extends StatelessWidget {
                                 Icons.chat_outlined,
                                 color: CustomColors.greyColor,
                               ),
-                              Text(post.comments.length.toString()),
+                              Text(post.comments.toString()),
                             ],
                           ),
                         )
@@ -164,30 +183,38 @@ class PostTile extends StatelessWidget {
 
 class PostTileViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
+  final _apiService = locator<ApiService>();
+  final _toastService = locator<ToastService>();
   String timePassed = "0s";
 
   void initialize(Post post) {
-    debugPrint("user: ${post.user.fullName}");
-    debugPrint("created: ${post.createdAt}");
     timePassed = getTimePassed(post.createdAt);
   }
 
-  void likePost(Post post, String? username) {
-    if (username == null) return;
-    if (!post.likes.contains(username)) {
-      post.likes.add(username);
-    } else {
-      post.likes.removeWhere((element) => element == username);
+  Future<void> likePost(
+      PostProvider postProvider, Post post, String? userId) async {
+    if (post.likes.contains(userId)) return;
+    try {
+      postProvider.likePost(post.id!, userId!);
+      notifyListeners();
+      await _apiService.likePost(post.id!);
+    } catch (error) {
+      debugPrint(error.toString());
+      _toastService
+          .callToast("Something went wrong, Please try after sometime");
     }
-    notifyListeners();
   }
 
   void navigateToSinglePost(Post post) {
     _navigationService.navigateToView(SinglePostView(post: post));
   }
 
-  void navigateToPublicProfile(User user) {
-    debugPrint("before profile");
+  void navigateToPublicProfile(User? user) {
+    if (user == null) {
+      _toastService
+          .callToast("Something went wrong please retry after sometime");
+      return;
+    }
     _navigationService
         .navigateToView(PublicProfileView(userPublicProfile: user));
     debugPrint("pbulic profile");

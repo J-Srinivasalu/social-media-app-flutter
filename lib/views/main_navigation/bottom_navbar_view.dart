@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/providers/post_provider.dart';
 import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:social_media_app/views/home/home_view.dart';
 import 'package:social_media_app/views/profile/profile_view.dart';
 import 'package:stacked/stacked.dart';
@@ -26,7 +27,13 @@ class BottomNavbarView extends StatelessWidget {
     final profileProvider = Provider.of<ProfileProvider>(context);
     return ViewModelBuilder<BottomNavbarViewModel>.reactive(
       builder: (context, model, child) => model.isBusy
-          ? const Scaffold(backgroundColor: Colors.white)
+          ? LoadingOverlay(
+              isLoading: model.isBusy,
+              progressIndicator: const CircularProgressIndicator(),
+              color: Colors.black,
+              opacity: 0.2,
+              child: const Scaffold(backgroundColor: Colors.white),
+            )
           : WillPopScope(
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
@@ -122,7 +129,6 @@ Widget _bottomBarItem(
     {IconData? icon,
     required String name,
     required int index,
-    String? imageUrl,
     required BottomNavbarViewModel model}) {
   var color = model.index == index ? CustomColors.primaryColor : Colors.grey;
   return GestureDetector(

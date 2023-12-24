@@ -34,35 +34,41 @@ class ProfileView extends StatelessWidget {
                           decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: CustomColors.primaryColor),
-                          child: profileProvider.profileImage != null
-                              ? CachedNetworkImage(
-                                  imageUrl: profileProvider.profileImage!,
-                                  width: 75,
-                                  height: 75,
-                                  fit: BoxFit.cover,
-                                )
-                              : IconButton(
-                                  onPressed: () => {},
-                                  icon: const Icon(
-                                    Icons.person,
-                                    color: Colors.white,
-                                    size: 40,
-                                  ),
+                          child: CachedNetworkImage(
+                            imageUrl: profileProvider.profilePic ?? "",
+                            width: 75,
+                            height: 75,
+                            errorWidget: (context, url, error) => const Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                            progressIndicatorBuilder: (context, url, progress) {
+                              return Container(
+                                width: 40,
+                                height: 40,
+                                alignment: Alignment.center,
+                                child: const CircularProgressIndicator(
+                                  color: CustomColors.whiteColor,
                                 ),
+                              );
+                            },
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                profileProvider.fullName!,
+                                profileProvider.fullName ?? "",
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
                               Text(
-                                profileProvider.username!,
+                                profileProvider.username ?? "",
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: CustomColors.darkGreyColor,
@@ -89,7 +95,7 @@ class ProfileView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: ListTile(
-                      onTap: () => model.logout(),
+                      onTap: () => askConfirmation(context, model),
                       leading: const Icon(
                         Icons.logout,
                         size: 20,
@@ -103,4 +109,65 @@ class ProfileView extends StatelessWidget {
             ),
         viewModelBuilder: () => ProfileViewModel());
   }
+}
+
+askConfirmation(BuildContext context, ProfileViewModel model) async {
+  Widget negativeButton(ctx) => TextButton(
+        child: const Padding(
+          padding: EdgeInsets.all(2.0),
+          child: Text(
+            "No",
+          ),
+        ),
+        onPressed: () {
+          Navigator.pop(ctx, false);
+        },
+      );
+  Widget positiveButton(ctx) => TextButton(
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all(CustomColors.blueDarkestColor),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ),
+          ),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.all(2.0),
+          child: Text(
+            "Yes",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        onPressed: () {
+          Navigator.pop(ctx, false);
+          model.logout();
+        },
+      );
+
+  AlertDialog alert(ctx) => AlertDialog(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        content: Container(
+          padding: const EdgeInsets.only(top: 8),
+          child: const Text(
+            "Do you want to Logout?",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        actions: [
+          negativeButton(ctx),
+          positiveButton(ctx),
+        ],
+      );
+
+  return showDialog(
+    context: context,
+    builder: (BuildContext ctx) {
+      return alert(ctx);
+    },
+  );
 }

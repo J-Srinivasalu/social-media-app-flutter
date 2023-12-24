@@ -64,6 +64,12 @@ class TextInputField extends StatelessWidget {
                 borderSide: BorderSide(color: CustomColors.primaryColor),
               ),
             ),
+            validator: (p) {
+              if (p!.isEmpty) {
+                return "Field Can't be empty";
+              }
+              return null;
+            },
           ),
         );
       },

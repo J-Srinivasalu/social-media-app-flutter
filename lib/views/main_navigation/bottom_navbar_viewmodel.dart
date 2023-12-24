@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/app/app.locator.dart';
-import 'package:social_media_app/models/post.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/post_provider.dart';
 import 'package:social_media_app/providers/profile_provider.dart';
-import 'package:social_media_app/utils/dummy_data.dart';
 import 'package:social_media_app/views/create_post/create_post_view.dart';
 import 'package:stacked/stacked.dart';
+import 'package:social_media_app/services/api_service.dart';
+import 'package:social_media_app/services/toast_service.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class BottomNavbarViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
+  final _apiService = locator<ApiService>();
+  final _toastService = locator<ToastService>();
 
   final homePageKey = GlobalKey<NavigatorState>();
   final profilePageKey = GlobalKey<NavigatorState>();
@@ -18,14 +20,9 @@ class BottomNavbarViewModel extends BaseViewModel {
   int index = 0;
 
   void initialize(int viewIndex, ProfileProvider profileProvider,
-      PostProvider postProvider) {
+      PostProvider postProvider) async {
     switchScreen(viewIndex);
-
-    profileProvider.setProfile(
-      User(fullName: "Jack", username: "@jack"),
-    );
-    List<Post> posts = DummyData.posts;
-    postProvider.addPosts(posts);
+    await runBusyFuture(setProfileProvider(profileProvider));
   }
 
   void switchScreen(int i) {
@@ -52,5 +49,19 @@ class BottomNavbarViewModel extends BaseViewModel {
 
   void navigateToCreatePost() {
     _navigationService.navigateToView(const CreatePostView());
+  }
+
+  Future<void> setProfileProvider(ProfileProvider profileProvider) async {
+    try {
+      final response = await _apiService.getUser();
+      if (response.isSuccessful()) {
+        User user = User.fromMap(response.responseGeneral.detail?.data["user"]);
+        profileProvider.setProfile(user);
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+      _toastService
+          .callToast("Something went wrong, Please try after sometime");
+    }
   }
 }

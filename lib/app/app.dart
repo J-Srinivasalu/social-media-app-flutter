@@ -1,6 +1,8 @@
 // import 'package:stacked/stacked_annotations.dart';
 
+import 'package:social_media_app/services/api_service.dart';
 import 'package:social_media_app/services/environment_service.dart';
+import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/toast_service.dart';
 import 'package:social_media_app/views/create_post/create_post_view.dart';
 import 'package:social_media_app/views/home/single_post_view.dart';
@@ -21,10 +23,14 @@ import 'package:stacked_services/stacked_services.dart';
   MaterialRoute(page: RegisterView, name: 'registerViewRoute'),
   MaterialRoute(page: SinglePostView, name: 'singlePostViewRoute'),
   MaterialRoute(page: EditProfileView, name: 'editProfileViewRoute'),
-  MaterialRoute(page: PublicProfileView, name: 'pulicProfileViewRoute'),
+  MaterialRoute(page: PublicProfileView, name: 'publicProfileViewRoute'),
 ], dependencies: [
   LazySingleton(classType: EnvironmentService),
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: ToastService),
+  LazySingleton(classType: ApiService),
+  InitializableSingleton(
+    classType: SharedPreferenceService,
+  ),
 ])
 class App {}

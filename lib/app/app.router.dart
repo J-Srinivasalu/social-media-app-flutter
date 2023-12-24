@@ -38,7 +38,7 @@ class Routes {
 
   static const editProfileViewRoute = '/edit-profile-view';
 
-  static const pulicProfileViewRoute = '/public-profile-view';
+  static const publicProfileViewRoute = '/public-profile-view';
 
   static const all = <String>{
     splashView,
@@ -48,7 +48,7 @@ class Routes {
     registerViewRoute,
     singlePostViewRoute,
     editProfileViewRoute,
-    pulicProfileViewRoute,
+    publicProfileViewRoute,
   };
 }
 
@@ -83,7 +83,7 @@ class StackedRouter extends _i1.RouterBase {
       page: _i8.EditProfileView,
     ),
     _i1.RouteDef(
-      Routes.pulicProfileViewRoute,
+      Routes.publicProfileViewRoute,
       page: _i9.PublicProfileView,
     ),
   ];
@@ -110,14 +110,20 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i5.LoginView: (data) {
+      final args = data.getArgs<LoginViewArguments>(
+        orElse: () => const LoginViewArguments(),
+      );
       return _i10.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i5.LoginView(),
+        builder: (context) => _i5.LoginView(key: args.key),
         settings: data,
       );
     },
     _i6.RegisterView: (data) {
+      final args = data.getArgs<RegisterViewArguments>(
+        orElse: () => const RegisterViewArguments(),
+      );
       return _i10.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i6.RegisterView(),
+        builder: (context) => _i6.RegisterView(key: args.key),
         settings: data,
       );
     },
@@ -176,6 +182,50 @@ class BottomNavbarViewArguments {
   @override
   int get hashCode {
     return key.hashCode ^ viewIndex.hashCode;
+  }
+}
+
+class LoginViewArguments {
+  const LoginViewArguments({this.key});
+
+  final _i10.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant LoginViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class RegisterViewArguments {
+  const RegisterViewArguments({this.key});
+
+  final _i10.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant RegisterViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
   }
 }
 
@@ -279,28 +329,32 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToLoginViewRoute([
+  Future<dynamic> navigateToLoginViewRoute({
+    _i10.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.loginViewRoute,
+        arguments: LoginViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> navigateToRegisterViewRoute([
+  Future<dynamic> navigateToRegisterViewRoute({
+    _i10.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.registerViewRoute,
+        arguments: RegisterViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -338,7 +392,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToPulicProfileViewRoute({
+  Future<dynamic> navigateToPublicProfileViewRoute({
     _i10.Key? key,
     required _i12.User userPublicProfile,
     int? routerId,
@@ -347,7 +401,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return navigateTo<dynamic>(Routes.pulicProfileViewRoute,
+    return navigateTo<dynamic>(Routes.publicProfileViewRoute,
         arguments: PublicProfileViewArguments(
             key: key, userPublicProfile: userPublicProfile),
         id: routerId,
@@ -401,28 +455,32 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithLoginViewRoute([
+  Future<dynamic> replaceWithLoginViewRoute({
+    _i10.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.loginViewRoute,
+        arguments: LoginViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> replaceWithRegisterViewRoute([
+  Future<dynamic> replaceWithRegisterViewRoute({
+    _i10.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.registerViewRoute,
+        arguments: RegisterViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -460,7 +518,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithPulicProfileViewRoute({
+  Future<dynamic> replaceWithPublicProfileViewRoute({
     _i10.Key? key,
     required _i12.User userPublicProfile,
     int? routerId,
@@ -469,7 +527,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   }) async {
-    return replaceWith<dynamic>(Routes.pulicProfileViewRoute,
+    return replaceWith<dynamic>(Routes.publicProfileViewRoute,
         arguments: PublicProfileViewArguments(
             key: key, userPublicProfile: userPublicProfile),
         id: routerId,

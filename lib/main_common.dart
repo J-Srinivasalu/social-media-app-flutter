@@ -18,14 +18,16 @@ void mainCommon(FlavorConfig flavorConfig) async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await setupLocator();
   rootApiUrl = flavorConfig.apiEndpoint![Endpoints.SERVER_URL] ?? "";
-  final _environmentService = locator<EnvironmentService>();
-  _environmentService.setFlavorType(flavorConfig.flavorType);
+  final environmentService = locator<EnvironmentService>();
+  environmentService.setFlavorType(flavorConfig.flavorType);
 
-  runApp(SocialMediaApp());
+  runApp(const SocialMediaApp());
 }
 
 class SocialMediaApp extends StatelessWidget {
   static const primaryColor = CustomColors.blueDarkestColor;
+
+  const SocialMediaApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

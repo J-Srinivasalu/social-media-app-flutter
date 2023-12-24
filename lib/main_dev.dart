@@ -8,7 +8,7 @@ void main() {
     ..appTitle = "Social media app DEV"
     ..flavorType = FlavorType.DEV
     ..apiEndpoint = {
-      Endpoints.SERVER_URL: "http://localhost:4000",
+      Endpoints.SERVER_URL: "https://social-media-app-l597.onrender.com",
       Endpoints.SENTRY_URL: ""
     });
 }
