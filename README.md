@@ -104,7 +104,7 @@ flutter run --flavor dev -t lib/main_dev.dart
 
 |        Login Screen         |        Register Screen         |   Main Navigations(Home)   |   Main Navigations(Profile)   |
 | :-------------------------: | :----------------------------: | :------------------------: | :---------------------------: |
-| <img src="screenshots/login.jpeg" alt="Login Screen" width="200"/> | <img src="screenshots/register.jpeg" alt="Register Screen" width="200"/> | <img src="screenshots/home.jpeg" alt="Home Screen" width="200"/> | <img src="screenshots/profile_v2.jpeg" alt="Profile Screen" width="200"/> |
+| <img src="screenshots/login.jpeg" alt="Login Screen" width="200"/> | <img src="screenshots/register.jpeg" alt="Register Screen" width="200"/> | <img src="screenshots/home.jpeg" alt="Home Screen" width="200"/> | <img src="screenshots/profile_v2.jpg" alt="Profile Screen" width="200"/> |
 
 |        Post Screen         |        Public Profile Screen         |        Create Post Screen         |        Create Post section         |
 | :------------------------: | :----------------------------------: | :-------------------------------: | :--------------------------------: |
