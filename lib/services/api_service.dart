@@ -168,6 +168,35 @@ class ApiService {
     return await _getRequest(userEndpoint);
   }
 
+  Future<ServerResponse> updateFcmToken(String fcmToken) async {
+    final body = {"fcmToken": fcmToken};
+    return await _postRequest(setFcmTokenEndpoint, body);
+  }
+
+  Future<ServerResponse> sendFriendRequest(String receiverId) async {
+    final body = {"receiverId": receiverId};
+    return await _postRequest(friendRequestEndpoint, body);
+  }
+
+  Future<ServerResponse> sendUnfriendRequest(String receiverId) async {
+    final body = {"receiverId": receiverId};
+    return await _postRequest(unfriendRequestEndpoint, body);
+  }
+
+  Future<ServerResponse> acceptFriendRequest(String senderId) async {
+    final body = {"senderId": senderId};
+    return await _postRequest(acceptFriendRequestEndpoint, body);
+  }
+
+  Future<ServerResponse> rejectFriendRequest(String senderId) async {
+    final body = {"senderId": senderId};
+    return await _postRequest(rejectFriendRequestEndpoint, body);
+  }
+
+  Future<ServerResponse> deleteRespondedFriendRequests() async {
+    return await _postRequest(deleteFriendRequestEndpoint, {});
+  }
+
   void _checkServerResponse({required http.Response response}) {
     debugPrint("${response.body} ${response.statusCode}");
 

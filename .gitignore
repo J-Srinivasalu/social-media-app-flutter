@@ -42,3 +42,168 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Dart
+**/build/
+.dart_tool/
+.packages
+
+# Flutter/Dart-specific
+*.iml
+*.lock
+.pub/
+.idea/
+.vscode/
+.flutter-plugins
+.flutter-plugins-dependencies
+/.dart_tool/
+
+# Flutter generated files
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/
+.flutter_bin/
+
+# Flutter SDK
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-plugins-dependencies.sha256
+
+# iOS
+Pods/
+ios/Pods/
+ios/Podfile.lock
+ios/Flutter/Flutter.framework/
+
+# Android
+build/
+android/app/build/
+android/build/
+android/gradle/
+android/app/src/main/flutter_assets/
+
+# macOS
+.DS_Store
+
+# Android Studio/IntelliJ
+.idea/
+*.iml
+*.iws
+*.iws.xml
+*.ipr
+*.iws
+*.iws.xml
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Gradle
+*.log
+.gradle/
+.idea/
+gradlew
+gradlew.bat
+build/
+
+# Xcode
+*.xcworkspace/
+*.xcodeproj/
+!*.xcworkspace/xcshareddata/
+!*.xcodeproj/xcshareddata/
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+*.xcuserdatad/
+
+# macOS
+.DS_Store
+
+# Flutter/Dart-specific
+*.iml
+*.lock
+.packages
+.pub/
+.dart_tool/
+.idea/
+.vscode/
+.flutter-plugins
+.flutter-plugins-dependencies
+/.dart_tool/
+
+# Flutter generated files
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/
+.flutter_bin/
+
+# Flutter SDK
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-plugins-dependencies.sha256
+
+# iOS
+Pods/
+ios/Pods/
+ios/Podfile.lock
+ios/Flutter/Flutter.framework/
+
+# Android
+build/
+android/app/build/
+android/build/
+android/gradle/
+android/app/src/main/flutter_assets/
+
+# macOS
+.DS_Store
+
+# Android Studio/IntelliJ
+.idea/
+*.iml
+*.iws
+*.iws.xml
+*.ipr
+*.iws
+*.iws.xml
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Gradle
+*.log
+.gradle/
+.idea/
+gradlew
+gradlew.bat
+build/
+
+# Xcode
+*.xcworkspace/
+*.xcodeproj/
+!*.xcworkspace/xcshareddata/
+!*.xcodeproj/xcshareddata/
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+*.xcuserdatad/
+
+# Firebase
+/android/app/google-services.json
+/ios/runner/GoogleService-Info.plist
+/macos/runner/GoogleService-Info.plist
+
+/ios/firebase_app_id_file.json
+/macos/firebase_app_id_file.json
+/lib/firebase_options.dart

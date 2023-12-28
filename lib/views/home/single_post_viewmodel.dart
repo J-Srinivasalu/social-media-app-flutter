@@ -83,6 +83,12 @@ class SinglePostViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  bool isLoading = true;
+  void updateIsLoading() {
+    isLoading = false;
+    notifyListeners();
+  }
+
   Future<void> fetchComments(Post post) async {
     try {
       final response =
@@ -110,6 +116,8 @@ class SinglePostViewModel extends BaseViewModel {
   }
 
   Future<void> loadComments(Post post) async {
+    _offset = 0;
+    _comments.clear();
     try {
       final response =
           await _apiService.getComments(post.id!, offset: _offset, limit: 10);
@@ -128,6 +136,8 @@ class SinglePostViewModel extends BaseViewModel {
       _toastService
           .callToast("Something went wrong, Please try after sometime");
       commentRefreshController.refreshFailed();
+    } finally {
+      updateIsLoading();
     }
   }
 

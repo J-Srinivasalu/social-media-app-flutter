@@ -18,7 +18,12 @@ class ProfileView extends StatelessWidget {
               body: Column(
                 children: [
                   Container(
-                    margin: const EdgeInsets.all(16),
+                    margin: const EdgeInsets.only(
+                      top: 16,
+                      bottom: 24,
+                      right: 16,
+                      left: 16,
+                    ),
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: CustomColors.whiteColor,
@@ -68,7 +73,7 @@ class ProfileView extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                profileProvider.username ?? "",
+                                "@${profileProvider.username}",
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: CustomColors.darkGreyColor,
@@ -88,27 +93,46 @@ class ProfileView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: CustomColors.whiteColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: ListTile(
-                      onTap: () => askConfirmation(context, model),
-                      leading: const Icon(
-                        Icons.logout,
-                        size: 20,
-                      ),
-                      title: const Text("Logout"),
-                      trailing: const Icon(Icons.arrow_forward_ios_rounded),
-                    ),
-                  )
+                  profileOptions(
+                    onClick: () => model.navigateToFriendView(),
+                    text: "Friends",
+                    icon: Icons.people_alt,
+                  ),
+                  profileOptions(
+                    onClick: () => model.navigateToFriendRequestView(),
+                    text: "Friend Requests",
+                    icon: Icons.person_add_alt_sharp,
+                  ),
+                  profileOptions(
+                    onClick: () => askConfirmation(context, model),
+                    text: "Logout",
+                    icon: Icons.logout,
+                  ),
                 ],
               ),
             ),
         viewModelBuilder: () => ProfileViewModel());
   }
+}
+
+Widget profileOptions(
+    {required Function onClick, required String text, required IconData icon}) {
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    decoration: BoxDecoration(
+      color: CustomColors.whiteColor,
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: ListTile(
+      onTap: () => onClick(),
+      leading: Icon(
+        icon,
+        size: 20,
+      ),
+      title: Text(text),
+      trailing: const Icon(Icons.arrow_forward_ios_rounded),
+    ),
+  );
 }
 
 askConfirmation(BuildContext context, ProfileViewModel model) async {

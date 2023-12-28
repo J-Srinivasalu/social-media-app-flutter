@@ -16,9 +16,11 @@ import 'bottom_navbar_viewmodel.dart';
 
 class BottomNavbarView extends StatelessWidget {
   final int viewIndex;
+  final Map<String, String>? data;
   const BottomNavbarView({
     Key? key,
     required this.viewIndex,
+    this.data,
   }) : super(key: key);
 
   @override
@@ -43,11 +45,6 @@ class BottomNavbarView extends StatelessWidget {
                     "SMA",
                     style: TextStyle(color: CustomColors.primaryColor),
                   ),
-                  actions: [
-                    IconButton(
-                        onPressed: () => {},
-                        icon: const Icon(Icons.notifications))
-                  ],
                 ),
                 body: IndexedStack(
                   index: model.index,
@@ -120,7 +117,7 @@ class BottomNavbarView extends StatelessWidget {
             ),
       viewModelBuilder: () => BottomNavbarViewModel(),
       onViewModelReady: (model) =>
-          model.initialize(viewIndex, profileProvider, postProvider),
+          model.initialize(viewIndex, profileProvider, postProvider, data),
     );
   }
 }

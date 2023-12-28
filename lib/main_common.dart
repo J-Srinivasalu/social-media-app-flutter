@@ -11,6 +11,8 @@ import 'package:social_media_app/utils/constants.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
 import 'package:social_media_app/utils/enums.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void mainCommon(FlavorConfig flavorConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +22,9 @@ void mainCommon(FlavorConfig flavorConfig) async {
   rootApiUrl = flavorConfig.apiEndpoint![Endpoints.SERVER_URL] ?? "";
   final environmentService = locator<EnvironmentService>();
   environmentService.setFlavorType(flavorConfig.flavorType);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const SocialMediaApp());
 }

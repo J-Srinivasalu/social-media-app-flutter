@@ -58,7 +58,16 @@ The mobile app allows users to interact with the social media platform on the go
    - Displays a user's public profile with sections for user details and their posts.
 
 5. **Single Post View:**
+
    - Detailed view of a single post, including comments.
+
+2. **Friend Requests:**
+
+   - Send/receive friend requests.
+
+4. **Notifications:**
+
+   - Receive notifications for friend requests.
 
 ## Future Plans
 
@@ -66,24 +75,22 @@ The mobile app allows users to interact with the social media platform on the go
 
    - Enhance post content options.
 
-2. **Friend Requests:**
-
-   - Send/receive friend requests.
-
-3. **Privacy Settings:**
+2. **Privacy Settings:**
 
    - Make posts visible only to friends.
 
-4. **Notifications:**
+3. **Real-time Chat:**
 
-   - Receive notifications when friends upload a post.
-
-5. **Real-time Chat:**
    - Enable real-time chat with friends.
+
+4. **Dark Mode:**
+
+   - Enable real-time chat with friends.
+
 
 ## Getting Started
 
-To run the Flutter mobile app, follow these steps:
+To run the Flutter mobile app in dev mode, follow these steps:
 
 1. Clone this repository.
 2. Run the following commands:
@@ -97,14 +104,17 @@ flutter run --flavor dev -t lib/main_dev.dart
 
 |        Login Screen         |        Register Screen         |   Main Navigations(Home)   |   Main Navigations(Profile)   |
 | :-------------------------: | :----------------------------: | :------------------------: | :---------------------------: |
-| <img src="screenshots/login.jpeg" alt="Login Screen" width="200"/> | <img src="screenshots/register.jpeg" alt="Register Screen" width="200"/> | <img src="screenshots/home.jpeg" alt="Home Screen" width="200"/> | <img src="screenshots/profile.jpeg" alt="Profile Screen" width="200"/> |
+| <img src="screenshots/login.jpeg" alt="Login Screen" width="200"/> | <img src="screenshots/register.jpeg" alt="Register Screen" width="200"/> | <img src="screenshots/home.jpeg" alt="Home Screen" width="200"/> | <img src="screenshots/profile_v2.jpeg" alt="Profile Screen" width="200"/> |
 
 |        Post Screen         |        Public Profile Screen         |        Create Post Screen         |        Create Post section         |
 | :------------------------: | :----------------------------------: | :-------------------------------: | :--------------------------------: |
 | <img src="screenshots/post.jpeg" alt="Post Screen" width="200"/> | <img src="screenshots/public_profile.jpeg" alt="Public profile Screen" width="200"/> | <img src="screenshots/create_post.jpeg" alt="Create Post Screen" width="200"/> | <img src="screenshots/select_image.jpeg" alt="Select Image Screen" width="200"/> |
 
-|        Edit profile Screen         |
-| :--------------------------------: |
-| <img src="screenshots/edit_profile.jpeg" alt="Edit Profile Screen" width="200"/> |
+|     Edit profile Screen    |        Friends Screen         |       Friend Requests Screen      |       Friend Requests Screen       |
+| :------------------------: | :---------------------------: | :-------------------------------: | :--------------------------------: |
+| <img src="screenshots/edit_profile.jpeg" alt="Edit Profile Screen" width="200"/> | <img src="screenshots/friends.jpg" alt="Friends Screen" width="200"/> | <img src="screenshots/friend_request_r.jpg" alt="Friend Request Received Screen" width="200"/> | <img src="screenshots/friend_request_s.jpg" alt="Friend Request Sent Screen" width="200"/> |
+|        Notification        |
+| :------------------------: |
+| <img src="screenshots/notification.jpg" alt="Notification" width="200"/> |
 
 Feel free to reach out for any questions or feedback. Happy coding!

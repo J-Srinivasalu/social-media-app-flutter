@@ -5,6 +5,8 @@ import 'package:social_media_app/services/environment_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/toast_service.dart';
 import 'package:social_media_app/views/create_post/create_post_view.dart';
+import 'package:social_media_app/views/friends/friend_requests_view.dart';
+import 'package:social_media_app/views/friends/friend_view.dart';
 import 'package:social_media_app/views/home/single_post_view.dart';
 import 'package:social_media_app/views/login/login_view.dart';
 import 'package:social_media_app/views/main_navigation/bottom_navbar_view.dart';
@@ -24,6 +26,8 @@ import 'package:stacked_services/stacked_services.dart';
   MaterialRoute(page: SinglePostView, name: 'singlePostViewRoute'),
   MaterialRoute(page: EditProfileView, name: 'editProfileViewRoute'),
   MaterialRoute(page: PublicProfileView, name: 'publicProfileViewRoute'),
+  MaterialRoute(page: FriendRequestView, name: 'friendRequestViewRoute'),
+  MaterialRoute(page: FriendView, name: 'friendViewRoute'),
 ], dependencies: [
   LazySingleton(classType: EnvironmentService),
   LazySingleton(classType: NavigationService),

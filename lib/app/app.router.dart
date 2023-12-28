@@ -5,12 +5,15 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i10;
+import 'package:flutter/material.dart' as _i12;
 import 'package:flutter/material.dart';
-import 'package:social_media_app/models/post.dart' as _i11;
-import 'package:social_media_app/models/user.dart' as _i12;
+import 'package:social_media_app/models/post.dart' as _i13;
+import 'package:social_media_app/models/user.dart' as _i14;
 import 'package:social_media_app/views/create_post/create_post_view.dart'
     as _i4;
+import 'package:social_media_app/views/friends/friend_requests_view.dart'
+    as _i10;
+import 'package:social_media_app/views/friends/friend_view.dart' as _i11;
 import 'package:social_media_app/views/home/single_post_view.dart' as _i7;
 import 'package:social_media_app/views/login/login_view.dart' as _i5;
 import 'package:social_media_app/views/main_navigation/bottom_navbar_view.dart'
@@ -21,7 +24,7 @@ import 'package:social_media_app/views/public_profile/public_profile_view.dart'
 import 'package:social_media_app/views/register/register_view.dart' as _i6;
 import 'package:social_media_app/views/splash/splash_view.dart' as _i2;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i13;
+import 'package:stacked_services/stacked_services.dart' as _i15;
 
 class Routes {
   static const splashView = '/';
@@ -40,6 +43,10 @@ class Routes {
 
   static const publicProfileViewRoute = '/public-profile-view';
 
+  static const friendRequestViewRoute = '/friend-request-view';
+
+  static const friendViewRoute = '/friend-view';
+
   static const all = <String>{
     splashView,
     bottomNavbarViewRoute,
@@ -49,6 +56,8 @@ class Routes {
     singlePostViewRoute,
     editProfileViewRoute,
     publicProfileViewRoute,
+    friendRequestViewRoute,
+    friendViewRoute,
   };
 }
 
@@ -86,25 +95,33 @@ class StackedRouter extends _i1.RouterBase {
       Routes.publicProfileViewRoute,
       page: _i9.PublicProfileView,
     ),
+    _i1.RouteDef(
+      Routes.friendRequestViewRoute,
+      page: _i10.FriendRequestView,
+    ),
+    _i1.RouteDef(
+      Routes.friendViewRoute,
+      page: _i11.FriendView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.SplashView(),
         settings: data,
       );
     },
     _i3.BottomNavbarView: (data) {
       final args = data.getArgs<BottomNavbarViewArguments>(nullOk: false);
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i3.BottomNavbarView(key: args.key, viewIndex: args.viewIndex),
         settings: data,
       );
     },
     _i4.CreatePostView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.CreatePostView(),
         settings: data,
       );
@@ -113,7 +130,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<LoginViewArguments>(
         orElse: () => const LoginViewArguments(),
       );
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => _i5.LoginView(key: args.key),
         settings: data,
       );
@@ -122,30 +139,42 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<RegisterViewArguments>(
         orElse: () => const RegisterViewArguments(),
       );
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => _i6.RegisterView(key: args.key),
         settings: data,
       );
     },
     _i7.SinglePostView: (data) {
       final args = data.getArgs<SinglePostViewArguments>(nullOk: false);
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i7.SinglePostView(key: args.key, post: args.post),
         settings: data,
       );
     },
     _i8.EditProfileView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.EditProfileView(),
         settings: data,
       );
     },
     _i9.PublicProfileView: (data) {
       final args = data.getArgs<PublicProfileViewArguments>(nullOk: false);
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => _i9.PublicProfileView(
             key: args.key, userPublicProfile: args.userPublicProfile),
+        settings: data,
+      );
+    },
+    _i10.FriendRequestView: (data) {
+      return _i12.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i10.FriendRequestView(),
+        settings: data,
+      );
+    },
+    _i11.FriendView: (data) {
+      return _i12.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i11.FriendView(),
         settings: data,
       );
     },
@@ -164,7 +193,7 @@ class BottomNavbarViewArguments {
     required this.viewIndex,
   });
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
   final int viewIndex;
 
@@ -188,7 +217,7 @@ class BottomNavbarViewArguments {
 class LoginViewArguments {
   const LoginViewArguments({this.key});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
   @override
   String toString() {
@@ -210,7 +239,7 @@ class LoginViewArguments {
 class RegisterViewArguments {
   const RegisterViewArguments({this.key});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
   @override
   String toString() {
@@ -235,9 +264,9 @@ class SinglePostViewArguments {
     required this.post,
   });
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
-  final _i11.Post post;
+  final _i13.Post post;
 
   @override
   String toString() {
@@ -262,9 +291,9 @@ class PublicProfileViewArguments {
     required this.userPublicProfile,
   });
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
-  final _i12.User userPublicProfile;
+  final _i14.User userPublicProfile;
 
   @override
   String toString() {
@@ -283,7 +312,7 @@ class PublicProfileViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i13.NavigationService {
+extension NavigatorStateExtension on _i15.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -299,7 +328,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToBottomNavbarViewRoute({
-    _i10.Key? key,
+    _i12.Key? key,
     required int viewIndex,
     int? routerId,
     bool preventDuplicates = true,
@@ -330,7 +359,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToLoginViewRoute({
-    _i10.Key? key,
+    _i12.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -346,7 +375,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToRegisterViewRoute({
-    _i10.Key? key,
+    _i12.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -362,8 +391,8 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToSinglePostViewRoute({
-    _i10.Key? key,
-    required _i11.Post post,
+    _i12.Key? key,
+    required _i13.Post post,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -393,8 +422,8 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToPublicProfileViewRoute({
-    _i10.Key? key,
-    required _i12.User userPublicProfile,
+    _i12.Key? key,
+    required _i14.User userPublicProfile,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -404,6 +433,34 @@ extension NavigatorStateExtension on _i13.NavigationService {
     return navigateTo<dynamic>(Routes.publicProfileViewRoute,
         arguments: PublicProfileViewArguments(
             key: key, userPublicProfile: userPublicProfile),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToFriendRequestViewRoute([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.friendRequestViewRoute,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToFriendViewRoute([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.friendViewRoute,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -425,7 +482,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithBottomNavbarViewRoute({
-    _i10.Key? key,
+    _i12.Key? key,
     required int viewIndex,
     int? routerId,
     bool preventDuplicates = true,
@@ -456,7 +513,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithLoginViewRoute({
-    _i10.Key? key,
+    _i12.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -472,7 +529,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithRegisterViewRoute({
-    _i10.Key? key,
+    _i12.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -488,8 +545,8 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithSinglePostViewRoute({
-    _i10.Key? key,
-    required _i11.Post post,
+    _i12.Key? key,
+    required _i13.Post post,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -519,8 +576,8 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithPublicProfileViewRoute({
-    _i10.Key? key,
-    required _i12.User userPublicProfile,
+    _i12.Key? key,
+    required _i14.User userPublicProfile,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -530,6 +587,34 @@ extension NavigatorStateExtension on _i13.NavigationService {
     return replaceWith<dynamic>(Routes.publicProfileViewRoute,
         arguments: PublicProfileViewArguments(
             key: key, userPublicProfile: userPublicProfile),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithFriendRequestViewRoute([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.friendRequestViewRoute,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithFriendViewRoute([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.friendViewRoute,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

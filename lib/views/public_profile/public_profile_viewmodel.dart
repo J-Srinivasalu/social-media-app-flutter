@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/models/public_profile.dart';
 import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/services/api_service.dart';
 import 'package:social_media_app/services/toast_service.dart';
 import 'package:stacked/stacked.dart';
@@ -13,7 +15,7 @@ class PublicProfileViewModel extends BaseViewModel {
 
   final postRefreshController = RefreshController(initialRefresh: false);
 
-  User user = User(fullName: "");
+  PublicProfile user = PublicProfile();
   final List<Post> _posts = [];
 
   List<Post> get posts => _posts
@@ -22,9 +24,15 @@ class PublicProfileViewModel extends BaseViewModel {
       return b.createdAt!.compareTo(a.createdAt!);
     });
 
-  void initialize(User userPublicProfile) {
-    user = userPublicProfile;
-    runBusyFuture(fetchPosts());
+  void initialize(User userPublicProfile) async {
+    user = PublicProfile(
+      id: userPublicProfile.id,
+      fullName: userPublicProfile.fullName,
+      username: userPublicProfile.username,
+      profilePic: userPublicProfile.profilePic,
+    );
+    await runBusyFuture(getPublicProfile());
+    await runBusyFuture(fetchPosts());
   }
 
   int _offset = 0;
@@ -32,6 +40,25 @@ class PublicProfileViewModel extends BaseViewModel {
   void updateOffset() {
     _offset += 10;
     notifyListeners();
+  }
+
+  Future<void> getPublicProfile() async {
+    try {
+      final response =
+          await runBusyFuture(_apiService.getPublicProfile(user.id!));
+      if (response.isSuccessful()) {
+        dynamic publicProfileMap =
+            response.responseGeneral.detail?.data["user"];
+        PublicProfile publicProfile = PublicProfile.fromMap(publicProfileMap);
+        user = publicProfile;
+        notifyListeners();
+      }
+    } catch (error, es) {
+      debugPrint(error.toString());
+      debugPrint(es.toString());
+      _toastService
+          .callToast("Something went wrong, Please try after sometime");
+    }
   }
 
   Future<void> fetchPosts() async {
@@ -50,6 +77,37 @@ class PublicProfileViewModel extends BaseViewModel {
         }
         postRefreshController.loadComplete();
         notifyListeners();
+      }
+    } catch (error, es) {
+      debugPrint(error.toString());
+      debugPrint(es.toString());
+      _toastService
+          .callToast("Something went wrong, Please try after sometime");
+    }
+  }
+
+  Future<void> sendUnfriendRequest(ProfileProvider profileProvider) async {
+    try {
+      final response =
+          await runBusyFuture(_apiService.sendUnfriendRequest(user.id!));
+      if (response.isSuccessful()) {
+        profileProvider.friends.removeWhere((friend) => friend.id == user.id);
+      }
+    } catch (error, es) {
+      debugPrint(error.toString());
+      debugPrint(es.toString());
+      _toastService
+          .callToast("Something went wrong, Please try after sometime");
+    }
+  }
+
+  Future<void> sendFriendRequest(
+      ProfileProvider profileProvider, User userPublicProfile) async {
+    try {
+      final response =
+          await runBusyFuture(_apiService.sendFriendRequest(user.id!));
+      if (response.isSuccessful()) {
+        profileProvider.addFriendRequest(userPublicProfile);
       }
     } catch (error, es) {
       debugPrint(error.toString());
