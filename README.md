@@ -31,6 +31,10 @@ The mobile app allows users to interact with the social media platform on the go
 6. **Like Posts and Comments:**
    - Users can like both posts and comments.
 
+7. **Real-time Chat:**
+
+   - Enable real-time chat with friends.(socket.io)
+
 ## Screens
 
 1. **Login:**
@@ -69,6 +73,11 @@ The mobile app allows users to interact with the social media platform on the go
 
    - Receive notifications for friend requests.
 
+5. **Chat:**
+
+   - send and receive messages to friends in real time.
+   - typing and online indicators.
+
 ## Future Plans
 
 1. **Upload Gifs, Videos, and PDFs:**
@@ -79,13 +88,13 @@ The mobile app allows users to interact with the social media platform on the go
 
    - Make posts visible only to friends.
 
-3. **Real-time Chat:**
+3. **Dark Mode:**
 
    - Enable real-time chat with friends.
 
-4. **Dark Mode:**
+4. **Send Media in Chats:**
 
-   - Enable real-time chat with friends.
+   - send media files like image, videos, and other files.
 
 
 ## Getting Started
@@ -113,8 +122,12 @@ flutter run --flavor dev -t lib/main_dev.dart
 |     Edit profile Screen    |        Friends Screen         |       Friend Requests Screen      |       Friend Requests Screen       |
 | :------------------------: | :---------------------------: | :-------------------------------: | :--------------------------------: |
 | <img src="screenshots/edit_profile.jpeg" alt="Edit Profile Screen" width="200"/> | <img src="screenshots/friends.jpg" alt="Friends Screen" width="200"/> | <img src="screenshots/friend_request_r.jpg" alt="Friend Request Received Screen" width="200"/> | <img src="screenshots/friend_request_s.jpg" alt="Friend Request Sent Screen" width="200"/> |
-|        Notification        |
+
+|         Notification       |        Chat Screen         |       Chat Screen       |       Chat Screen       |
+| :------------------------: | :---------------------------: | :-------------------------------: | :--------------------------------: |
+| <img src="screenshots/notification.jpg" alt="Notification" width="200"/> | <img src="screenshots/chat.jpeg" alt="chat screen" width="200"/> | <img src="screenshots/typing.jpeg" alt="typing" width="200"/> | <img src="screenshots/online.jpeg" alt="Online" width="200"/> |
+|        Chat Screen        |
 | :------------------------: |
-| <img src="screenshots/notification.jpg" alt="Notification" width="200"/> |
+| <img src="screenshots/last_seen.jpeg" alt="last seen" width="200"/> |
 
 Feel free to reach out for any questions or feedback. Happy coding!

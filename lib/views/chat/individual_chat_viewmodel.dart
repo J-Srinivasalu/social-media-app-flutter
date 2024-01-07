@@ -144,6 +144,7 @@ class IndividualChatViewModel extends BaseViewModel {
     debugPrint("Start ${DateTime.now().toIso8601String()}");
     User user = profileProvider.toUser();
     final messageContent = messageController.text;
+    if (messageContent.isEmpty) return;
     messageController.clear();
     _socketIOService.socket?.emit(ChatEventEnum.STOP_TYPING_EVENT, chatId);
     final tempMessageId = "message${DateTime.now().microsecond}";
