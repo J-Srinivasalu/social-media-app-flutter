@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media_app/providers/chat_provider.dart';
+import 'package:social_media_app/providers/post_provider.dart';
 import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
 import 'package:stacked/stacked.dart';
@@ -13,6 +15,8 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
+    final postProvider = Provider.of<PostProvider>(context);
+    final chatProvider = Provider.of<ChatProvider>(context);
     return ViewModelBuilder<ProfileViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
               body: Column(
@@ -104,7 +108,13 @@ class ProfileView extends StatelessWidget {
                     icon: Icons.person_add_alt_sharp,
                   ),
                   profileOptions(
-                    onClick: () => askConfirmation(context, model),
+                    onClick: () => askConfirmation(
+                      context,
+                      model,
+                      profileProvider,
+                      postProvider,
+                      chatProvider,
+                    ),
                     text: "Logout",
                     icon: Icons.logout,
                   ),
@@ -135,7 +145,13 @@ Widget profileOptions(
   );
 }
 
-askConfirmation(BuildContext context, ProfileViewModel model) async {
+askConfirmation(
+  BuildContext context,
+  ProfileViewModel model,
+  ProfileProvider profileProvider,
+  PostProvider postProvider,
+  ChatProvider chatProvider,
+) async {
   Widget negativeButton(ctx) => TextButton(
         child: const Padding(
           padding: EdgeInsets.all(2.0),
@@ -166,7 +182,11 @@ askConfirmation(BuildContext context, ProfileViewModel model) async {
         ),
         onPressed: () {
           Navigator.pop(ctx, false);
-          model.logout();
+          model.logout(
+            profileProvider,
+            postProvider,
+            chatProvider,
+          );
         },
       );
 

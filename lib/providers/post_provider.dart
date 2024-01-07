@@ -26,7 +26,7 @@ class PostProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetPosts() {
+  void reset() {
     _posts.clear();
     notifyListeners();
   }

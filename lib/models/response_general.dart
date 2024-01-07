@@ -9,17 +9,20 @@ class ResponseGeneral {
 
   ResponseGeneral.fromJson(
     dynamic json,
+    int statusCode,
   ) {
-    _detail = Detail.fromJson(json);
+    _detail = Detail.fromJson(json, statusCode);
   }
 }
 
 class Detail {
   bool? _success;
+  int? _statusCode;
   String? _message;
   String? _error;
   dynamic _data;
 
+  int? get statusCode => _statusCode;
   String? get message => _message;
   String? get error => _error;
 
@@ -31,7 +34,8 @@ class Detail {
     _data = data;
   }
 
-  Detail.fromJson(dynamic json) {
+  Detail.fromJson(dynamic json, statusCode) {
+    _statusCode = statusCode;
     _success = json["success"];
     _message = json["message"];
     _error = json["error"];
@@ -40,6 +44,7 @@ class Detail {
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
+    map["status"] = _statusCode;
     map["success"] = _success;
     map["message"] = _message;
     map["error"] = _error;

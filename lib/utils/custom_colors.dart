@@ -17,6 +17,7 @@ class CustomColors {
   static const pinkishredLightColor = Color(0xffFDE7EF);
   static const greenColor = Color(0xff42988E);
   static const greenLightColor = Color(0xffE6FCF7);
+  static const vibrantGreenColor = Color(0xFF4CAF50);
   static const blackColor = Color(0xff0F0F0F);
   static const darkGreyColor = Color(0xff4D4D4D);
   static const greyColor = Color(0xff8E8E8E);

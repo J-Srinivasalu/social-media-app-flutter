@@ -64,7 +64,7 @@ class HomeViewModel extends BaseViewModel {
       final response = await _apiService.getPosts(offset: 0, limit: 10);
       if (response.isSuccessful()) {
         _offset = 0;
-        postProvider.resetPosts();
+        postProvider.reset();
         dynamic postsJson = response.responseGeneral.detail?.data["posts"];
         List<Post> posts =
             List<Post>.from(postsJson.map((post) => Post.fromMap(post)));

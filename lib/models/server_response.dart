@@ -13,6 +13,7 @@ class ServerResponse {
           json.decode(
             response?.body ?? "",
           ),
+          response?.statusCode ?? 200,
         );
 
   bool isSuccessful() => (responseGeneral.detail?.success == true);

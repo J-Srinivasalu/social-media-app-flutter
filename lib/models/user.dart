@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 class User {
   String? id;
   String? fullName;
@@ -11,6 +9,10 @@ class User {
   List<FriendRequst>? friendRequestSent;
   List<FriendRequst>? friendRequestReceived;
   List<User>? friends;
+  bool isOnline = false;
+  String? fcmToken;
+  DateTime? updatedAt;
+  DateTime? createdAt;
 
   User({
     this.id,
@@ -20,6 +22,10 @@ class User {
     this.friendRequestSent = const [],
     this.friendRequestReceived = const [],
     this.friends = const [],
+    this.isOnline = false,
+    this.fcmToken,
+    this.updatedAt,
+    this.createdAt,
   });
 
   factory User.fromJson(String str) => User.fromMap(json.decode(str));
@@ -44,6 +50,12 @@ class User {
             (request) => User.fromMap(request),
           ))
         : null;
+    final updatedAt = json["updatedAt"] != null
+        ? DateTime.parse(json["updatedAt"])
+        : DateTime.now();
+    final createdAt = json["createdAt"] != null
+        ? DateTime.parse(json["createdAt"])
+        : DateTime.now();
     return User(
       id: json["_id"],
       fullName: json["fullName"],
@@ -52,8 +64,28 @@ class User {
       friendRequestReceived: friendRequestReceived,
       friendRequestSent: friendRequestSent,
       friends: friends,
+      isOnline: json["isOnline"] ?? false,
+      fcmToken: json["fcmToken"],
+      updatedAt: updatedAt,
+      createdAt: createdAt,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is User && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
+  Map<String, dynamic> toMap() => {
+        "_id": id,
+        "fullName": fullName,
+        "username": username,
+        "profilePic": profilePic,
+        "isOnline": isOnline,
+      };
 }
 
 class FriendRequst {

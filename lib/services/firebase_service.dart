@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:social_media_app/app/app.locator.dart';
+import 'package:social_media_app/providers/chat_provider.dart';
+import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/services/api_service.dart';
 import 'package:social_media_app/services/toast_service.dart';
 import 'package:social_media_app/views/main_navigation/bottom_navbar_view.dart';
@@ -69,6 +71,8 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 }
 
 void initFirebaseNotification(
+    ProfileProvider profileProvider,
+    ChatProvider chatProvider,
     Function(Map<String, dynamic>) doWhenInForeground) {
   FirebaseMessaging fmInstance = FirebaseMessaging.instance;
   fmInstance.getInitialMessage();
@@ -78,19 +82,22 @@ void initFirebaseNotification(
     debugPrint("SMA: initFirebaseNotification data:${message.data.toString()}");
     if (notification == null) return;
     doWhenInForeground(message.data);
+    if (message.data["action"] == "message" &&
+        chatProvider.currentChat?.id == message.data["chatId"]) return;
     _flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            _androidChannel.id,
-            _androidChannel.name,
-            channelDescription: _androidChannel.description,
-            icon: '@mipmap/ic_launcher',
-          ),
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          _androidChannel.id,
+          _androidChannel.name,
+          channelDescription: _androidChannel.description,
+          icon: '@mipmap/ic_launcher',
         ),
-        payload: jsonEncode(message.toMap()));
+      ),
+      payload: jsonEncode(message.toMap()),
+    );
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
@@ -99,11 +106,23 @@ void initFirebaseNotification(
     // will navigate based on dynamic links or something similar
     _toastService.callToast(message.data["action"] ?? "No data sent");
   });
-
-  fmInstance.getToken().then((value) {
-    if (value != null) {
-      _apiService.updateFcmToken(value);
-    }
-  });
+  try {
+    fmInstance.getToken().then((value) async {
+      debugPrint("get token $value");
+      if (value != null) {
+        if (profileProvider.fcmToken != value) {
+          final response = await _apiService.updateFcmToken(value);
+          if (response.isSuccessful()) {
+            profileProvider.updateFcmToken(value);
+          } else {
+            debugPrint("FCM token not updated");
+          }
+        }
+      }
+    });
+  } catch (error, es) {
+    debugPrint(error.toString());
+    debugPrint(es.toString());
+  }
   initNotifications();
 }

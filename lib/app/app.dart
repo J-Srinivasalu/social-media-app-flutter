@@ -3,7 +3,11 @@
 import 'package:social_media_app/services/api_service.dart';
 import 'package:social_media_app/services/environment_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
+import 'package:social_media_app/services/socket_io_service.dart';
 import 'package:social_media_app/services/toast_service.dart';
+import 'package:social_media_app/views/chat/chats_view.dart';
+import 'package:social_media_app/views/chat/individual_chat_view.dart';
+import 'package:social_media_app/views/chat/new_message_view.dart';
 import 'package:social_media_app/views/create_post/create_post_view.dart';
 import 'package:social_media_app/views/friends/friend_requests_view.dart';
 import 'package:social_media_app/views/friends/friend_view.dart';
@@ -28,11 +32,15 @@ import 'package:stacked_services/stacked_services.dart';
   MaterialRoute(page: PublicProfileView, name: 'publicProfileViewRoute'),
   MaterialRoute(page: FriendRequestView, name: 'friendRequestViewRoute'),
   MaterialRoute(page: FriendView, name: 'friendViewRoute'),
+  MaterialRoute(page: ChatsView, name: 'chatsViewRoute'),
+  MaterialRoute(page: IndividualChatView, name: 'individualChatViewRoute'),
+  MaterialRoute(page: NewMessageView, name: 'newMessageViewRoute'),
 ], dependencies: [
   LazySingleton(classType: EnvironmentService),
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: ToastService),
   LazySingleton(classType: ApiService),
+  LazySingleton(classType: SocketIOService),
   InitializableSingleton(
     classType: SharedPreferenceService,
   ),

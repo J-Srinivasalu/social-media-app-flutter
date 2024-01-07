@@ -9,6 +9,7 @@ class ProfileProvider extends ChangeNotifier {
   List<FriendRequst>? _friendRequestSent = [];
   List<FriendRequst>? _friendRequestReceived = [];
   List<User>? _friends = [];
+  String? _fcmToken;
 
   String? get id => _id;
   String? get fullName => _fullName;
@@ -17,6 +18,7 @@ class ProfileProvider extends ChangeNotifier {
   List<FriendRequst> get friendRequestSent => _friendRequestSent ?? [];
   List<FriendRequst> get friendRequestReceived => _friendRequestReceived ?? [];
   List<User> get friends => _friends ?? [];
+  String? get fcmToken => _fcmToken;
 
   void setProfile(User user) {
     _id = user.id;
@@ -26,6 +28,7 @@ class ProfileProvider extends ChangeNotifier {
     _friendRequestSent = user.friendRequestSent;
     _friendRequestReceived = user.friendRequestReceived;
     _friends = user.friends;
+    _fcmToken = user.fcmToken;
     notifyListeners();
   }
 
@@ -35,6 +38,10 @@ class ProfileProvider extends ChangeNotifier {
     }
     _fullName = user.fullName;
     notifyListeners();
+  }
+
+  void updateFcmToken(String token) {
+    _fcmToken = token;
   }
 
   void addFriendRequest(User user) {
@@ -89,6 +96,23 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   User toUser() {
-    return User(fullName: fullName!, username: username!);
+    return User(
+      id: id,
+      fullName: fullName!,
+      username: username!,
+      profilePic: profilePic,
+    );
+  }
+
+  void reset() {
+    _id = null;
+    _fullName = null;
+    _username = null;
+    _profilePic = null;
+    _friendRequestSent = [];
+    _friendRequestReceived = [];
+    _friends = [];
+    _fcmToken = null;
+    notifyListeners();
   }
 }

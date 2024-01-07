@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/app/app.locator.dart';
 import 'package:social_media_app/app/app.router.dart';
 import 'package:social_media_app/models/helpers/flavor_config.dart';
+import 'package:social_media_app/providers/chat_provider.dart';
 import 'package:social_media_app/providers/post_provider.dart';
 import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/services/environment_service.dart';
@@ -41,6 +42,8 @@ class SocialMediaApp extends StatelessWidget {
             create: ((context) => ProfileProvider())),
         ChangeNotifierProvider<PostProvider>(
             create: ((context) => PostProvider())),
+        ChangeNotifierProvider<ChatProvider>(
+            create: ((context) => ChatProvider())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

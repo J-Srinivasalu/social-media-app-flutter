@@ -5,10 +5,13 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i12;
+import 'package:flutter/material.dart' as _i15;
 import 'package:flutter/material.dart';
-import 'package:social_media_app/models/post.dart' as _i13;
-import 'package:social_media_app/models/user.dart' as _i14;
+import 'package:social_media_app/models/post.dart' as _i16;
+import 'package:social_media_app/models/user.dart' as _i17;
+import 'package:social_media_app/views/chat/chats_view.dart' as _i12;
+import 'package:social_media_app/views/chat/individual_chat_view.dart' as _i13;
+import 'package:social_media_app/views/chat/new_message_view.dart' as _i14;
 import 'package:social_media_app/views/create_post/create_post_view.dart'
     as _i4;
 import 'package:social_media_app/views/friends/friend_requests_view.dart'
@@ -24,7 +27,7 @@ import 'package:social_media_app/views/public_profile/public_profile_view.dart'
 import 'package:social_media_app/views/register/register_view.dart' as _i6;
 import 'package:social_media_app/views/splash/splash_view.dart' as _i2;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i15;
+import 'package:stacked_services/stacked_services.dart' as _i18;
 
 class Routes {
   static const splashView = '/';
@@ -47,6 +50,12 @@ class Routes {
 
   static const friendViewRoute = '/friend-view';
 
+  static const chatsViewRoute = '/chats-view';
+
+  static const individualChatViewRoute = '/individual-chat-view';
+
+  static const newMessageViewRoute = '/new-message-view';
+
   static const all = <String>{
     splashView,
     bottomNavbarViewRoute,
@@ -58,6 +67,9 @@ class Routes {
     publicProfileViewRoute,
     friendRequestViewRoute,
     friendViewRoute,
+    chatsViewRoute,
+    individualChatViewRoute,
+    newMessageViewRoute,
   };
 }
 
@@ -103,25 +115,37 @@ class StackedRouter extends _i1.RouterBase {
       Routes.friendViewRoute,
       page: _i11.FriendView,
     ),
+    _i1.RouteDef(
+      Routes.chatsViewRoute,
+      page: _i12.ChatsView,
+    ),
+    _i1.RouteDef(
+      Routes.individualChatViewRoute,
+      page: _i13.IndividualChatView,
+    ),
+    _i1.RouteDef(
+      Routes.newMessageViewRoute,
+      page: _i14.NewMessageView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.SplashView(),
         settings: data,
       );
     },
     _i3.BottomNavbarView: (data) {
       final args = data.getArgs<BottomNavbarViewArguments>(nullOk: false);
-      return _i12.MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            _i3.BottomNavbarView(key: args.key, viewIndex: args.viewIndex),
+      return _i15.MaterialPageRoute<dynamic>(
+        builder: (context) => _i3.BottomNavbarView(
+            key: args.key, viewIndex: args.viewIndex, data: args.data),
         settings: data,
       );
     },
     _i4.CreatePostView: (data) {
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.CreatePostView(),
         settings: data,
       );
@@ -130,7 +154,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<LoginViewArguments>(
         orElse: () => const LoginViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i5.LoginView(key: args.key),
         settings: data,
       );
@@ -139,42 +163,62 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<RegisterViewArguments>(
         orElse: () => const RegisterViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i6.RegisterView(key: args.key),
         settings: data,
       );
     },
     _i7.SinglePostView: (data) {
       final args = data.getArgs<SinglePostViewArguments>(nullOk: false);
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i7.SinglePostView(key: args.key, post: args.post),
         settings: data,
       );
     },
     _i8.EditProfileView: (data) {
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.EditProfileView(),
         settings: data,
       );
     },
     _i9.PublicProfileView: (data) {
       final args = data.getArgs<PublicProfileViewArguments>(nullOk: false);
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i9.PublicProfileView(
             key: args.key, userPublicProfile: args.userPublicProfile),
         settings: data,
       );
     },
     _i10.FriendRequestView: (data) {
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => const _i10.FriendRequestView(),
         settings: data,
       );
     },
     _i11.FriendView: (data) {
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => const _i11.FriendView(),
+        settings: data,
+      );
+    },
+    _i12.ChatsView: (data) {
+      return _i15.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i12.ChatsView(),
+        settings: data,
+      );
+    },
+    _i13.IndividualChatView: (data) {
+      final args = data.getArgs<IndividualChatViewArguments>(nullOk: false);
+      return _i15.MaterialPageRoute<dynamic>(
+        builder: (context) => _i13.IndividualChatView(
+            key: args.key, friend: args.friend, chatId: args.chatId),
+        settings: data,
+      );
+    },
+    _i14.NewMessageView: (data) {
+      return _i15.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i14.NewMessageView(),
         settings: data,
       );
     },
@@ -191,33 +235,38 @@ class BottomNavbarViewArguments {
   const BottomNavbarViewArguments({
     this.key,
     required this.viewIndex,
+    this.data,
   });
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   final int viewIndex;
 
+  final Map<String, String>? data;
+
   @override
   String toString() {
-    return '{"key": "$key", "viewIndex": "$viewIndex"}';
+    return '{"key": "$key", "viewIndex": "$viewIndex", "data": "$data"}';
   }
 
   @override
   bool operator ==(covariant BottomNavbarViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.viewIndex == viewIndex;
+    return other.key == key &&
+        other.viewIndex == viewIndex &&
+        other.data == data;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ viewIndex.hashCode;
+    return key.hashCode ^ viewIndex.hashCode ^ data.hashCode;
   }
 }
 
 class LoginViewArguments {
   const LoginViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -239,7 +288,7 @@ class LoginViewArguments {
 class RegisterViewArguments {
   const RegisterViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -264,9 +313,9 @@ class SinglePostViewArguments {
     required this.post,
   });
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
-  final _i13.Post post;
+  final _i16.Post post;
 
   @override
   String toString() {
@@ -291,9 +340,9 @@ class PublicProfileViewArguments {
     required this.userPublicProfile,
   });
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
-  final _i14.User userPublicProfile;
+  final _i17.User userPublicProfile;
 
   @override
   String toString() {
@@ -312,7 +361,37 @@ class PublicProfileViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i15.NavigationService {
+class IndividualChatViewArguments {
+  const IndividualChatViewArguments({
+    this.key,
+    required this.friend,
+    required this.chatId,
+  });
+
+  final _i15.Key? key;
+
+  final _i17.User friend;
+
+  final String chatId;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "friend": "$friend", "chatId": "$chatId"}';
+  }
+
+  @override
+  bool operator ==(covariant IndividualChatViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.friend == friend && other.chatId == chatId;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ friend.hashCode ^ chatId.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i18.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -328,8 +407,9 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> navigateToBottomNavbarViewRoute({
-    _i12.Key? key,
+    _i15.Key? key,
     required int viewIndex,
+    Map<String, String>? data,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -337,7 +417,8 @@ extension NavigatorStateExtension on _i15.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.bottomNavbarViewRoute,
-        arguments: BottomNavbarViewArguments(key: key, viewIndex: viewIndex),
+        arguments: BottomNavbarViewArguments(
+            key: key, viewIndex: viewIndex, data: data),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -359,7 +440,7 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> navigateToLoginViewRoute({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -375,7 +456,7 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> navigateToRegisterViewRoute({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -391,8 +472,8 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> navigateToSinglePostViewRoute({
-    _i12.Key? key,
-    required _i13.Post post,
+    _i15.Key? key,
+    required _i16.Post post,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -422,8 +503,8 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> navigateToPublicProfileViewRoute({
-    _i12.Key? key,
-    required _i14.User userPublicProfile,
+    _i15.Key? key,
+    required _i17.User userPublicProfile,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -467,6 +548,53 @@ extension NavigatorStateExtension on _i15.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToChatsViewRoute([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.chatsViewRoute,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToIndividualChatViewRoute({
+    _i15.Key? key,
+    required _i17.User friend,
+    required String chatId,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.individualChatViewRoute,
+        arguments: IndividualChatViewArguments(
+            key: key, friend: friend, chatId: chatId),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToNewMessageViewRoute([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.newMessageViewRoute,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -482,8 +610,9 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> replaceWithBottomNavbarViewRoute({
-    _i12.Key? key,
+    _i15.Key? key,
     required int viewIndex,
+    Map<String, String>? data,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -491,7 +620,8 @@ extension NavigatorStateExtension on _i15.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.bottomNavbarViewRoute,
-        arguments: BottomNavbarViewArguments(key: key, viewIndex: viewIndex),
+        arguments: BottomNavbarViewArguments(
+            key: key, viewIndex: viewIndex, data: data),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -513,7 +643,7 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> replaceWithLoginViewRoute({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -529,7 +659,7 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> replaceWithRegisterViewRoute({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -545,8 +675,8 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> replaceWithSinglePostViewRoute({
-    _i12.Key? key,
-    required _i13.Post post,
+    _i15.Key? key,
+    required _i16.Post post,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -576,8 +706,8 @@ extension NavigatorStateExtension on _i15.NavigationService {
   }
 
   Future<dynamic> replaceWithPublicProfileViewRoute({
-    _i12.Key? key,
-    required _i14.User userPublicProfile,
+    _i15.Key? key,
+    required _i17.User userPublicProfile,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -615,6 +745,53 @@ extension NavigatorStateExtension on _i15.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.friendViewRoute,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithChatsViewRoute([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.chatsViewRoute,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithIndividualChatViewRoute({
+    _i15.Key? key,
+    required _i17.User friend,
+    required String chatId,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.individualChatViewRoute,
+        arguments: IndividualChatViewArguments(
+            key: key, friend: friend, chatId: chatId),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithNewMessageViewRoute([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.newMessageViewRoute,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

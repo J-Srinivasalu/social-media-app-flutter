@@ -197,11 +197,54 @@ class ApiService {
     return await _postRequest(deleteFriendRequestEndpoint, {});
   }
 
+  Future<ServerResponse> createOrGetChat(String receiverId) async {
+    final body = {
+      "receiverId": receiverId,
+    };
+    return await _postRequest(chatEndpoint, body);
+  }
+
+  Future<ServerResponse> sendMessage(
+      String conversationId, String message) async {
+    final body = {
+      "chatId": conversationId,
+      "content": message,
+    };
+    return await _postRequest(messageEndpoint, body);
+  }
+
+  Future<ServerResponse> updateStatus(String messageId, String status) async {
+    final body = {
+      "messageId": messageId,
+      "status": status,
+    };
+    return await _postRequest(messageEndpoint, body);
+  }
+
+  Future<ServerResponse> getChats(
+      {int offset = 0, int limit = 10}) async {
+    final params = {
+      "offset": offset.toString(),
+      "limit": limit.toString(),
+    };
+    return await _getRequest(chatEndpoint, params: params);
+  }
+
+  Future<ServerResponse> getMessages(String chatId,
+      {int offset = 0, int limit = 10}) async {
+    final params = {
+      "chatId": chatId,
+      "offset": offset.toString(),
+      "limit": limit.toString(),
+    };
+    return await _getRequest(messageEndpoint, params: params);
+  }
+
   void _checkServerResponse({required http.Response response}) {
     debugPrint("${response.body} ${response.statusCode}");
 
-    final data = ResponseGeneral.fromJson(json.decode(response.body));
-
+    final data = ResponseGeneral.fromJson(
+        json.decode(response.body), response.statusCode);
     if (data.detail?.success != true) {
       _toastService.callToast(data.detail?.message);
       if (response.statusCode == 401) {

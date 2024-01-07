@@ -3,10 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media_app/models/notification_action.dart';
+import 'package:social_media_app/providers/chat_provider.dart';
 import 'package:social_media_app/providers/post_provider.dart';
 import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
-import 'package:loading_overlay/loading_overlay.dart';
 import 'package:social_media_app/views/home/home_view.dart';
 import 'package:social_media_app/views/profile/profile_view.dart';
 import 'package:stacked/stacked.dart';
@@ -16,10 +17,12 @@ import 'bottom_navbar_viewmodel.dart';
 
 class BottomNavbarView extends StatelessWidget {
   final int viewIndex;
+  final NotificationAction? notificationAction;
   final Map<String, String>? data;
   const BottomNavbarView({
     Key? key,
     required this.viewIndex,
+    this.notificationAction,
     this.data,
   }) : super(key: key);
 
@@ -27,15 +30,30 @@ class BottomNavbarView extends StatelessWidget {
   Widget build(BuildContext context) {
     final postProvider = Provider.of<PostProvider>(context);
     final profileProvider = Provider.of<ProfileProvider>(context);
+    final chatProvider = Provider.of<ChatProvider>(context);
     return ViewModelBuilder<BottomNavbarViewModel>.reactive(
       builder: (context, model, child) => model.isBusy
-          ? LoadingOverlay(
-              isLoading: model.isBusy,
-              progressIndicator: const CircularProgressIndicator(),
-              color: Colors.black,
-              opacity: 0.2,
-              child: const Scaffold(backgroundColor: Colors.white),
-            )
+          ? Scaffold(
+              backgroundColor: Colors.white,
+              body: Column(
+                children: [
+                  Expanded(child: Container()),
+                  const CircularProgressIndicator(
+                    color: CustomColors.lightBlueColor,
+                  ),
+                  model.serverDown
+                      ? Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            child: const Text(
+                              "This might take some time, as the backend server goes down after 15 minutes of inactivity. Thanks for your patience.",
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                      : Expanded(child: Container()),
+                ],
+              ))
           : WillPopScope(
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
@@ -45,6 +63,12 @@ class BottomNavbarView extends StatelessWidget {
                     "SMA",
                     style: TextStyle(color: CustomColors.primaryColor),
                   ),
+                  actions: [
+                    IconButton(
+                      onPressed: () => model.navigateToChats(),
+                      icon: const Icon(Icons.chat),
+                    ),
+                  ],
                 ),
                 body: IndexedStack(
                   index: model.index,
@@ -52,8 +76,9 @@ class BottomNavbarView extends StatelessWidget {
                     Navigator(
                       key: model.homePageKey,
                       onGenerateRoute: (route) => MaterialPageRoute(
-                          settings: route,
-                          builder: (context) => const HomeView()),
+                        settings: route,
+                        builder: (context) => const HomeView(),
+                      ),
                     ),
                     Navigator(
                       key: model.profilePageKey,
@@ -116,8 +141,14 @@ class BottomNavbarView extends StatelessWidget {
               onWillPop: () => _onBackPressed(model, context),
             ),
       viewModelBuilder: () => BottomNavbarViewModel(),
-      onViewModelReady: (model) =>
-          model.initialize(viewIndex, profileProvider, postProvider, data),
+      onViewModelReady: (model) => model.initialize(
+        viewIndex,
+        profileProvider,
+        postProvider,
+        data,
+        chatProvider,
+        notificationAction,
+      ),
     );
   }
 }

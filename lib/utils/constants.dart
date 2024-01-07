@@ -26,4 +26,9 @@ final acceptFriendRequestEndpoint = "$rootApiUrl/friend/accept";
 final rejectFriendRequestEndpoint = "$rootApiUrl/friend/reject";
 final deleteFriendRequestEndpoint = "$rootApiUrl/friend/request/seen";
 
+//chat
+final chatEndpoint = "$rootApiUrl/chat";
+final messageEndpoint = "$rootApiUrl/chat/message";
+// final messageStatusEndpoint = "$rootApiUrl/chat//message/status";
+
 const LOCAL_STORAGE_KEY_TOKEN = "token";
