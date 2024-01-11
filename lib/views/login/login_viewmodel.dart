@@ -26,15 +26,19 @@ class LoginViewModel extends BaseViewModel {
 
       if (response.isSuccessful()) {
         final token = response.responseGeneral.detail?.data['token'];
+        final refreshToken =
+            response.responseGeneral.detail?.data['refreshToken'];
         debugPrint(token);
         if (token != null) {
-          await _sharedPreferenceService.setToken(token);
+          _sharedPreferenceService.setToken(token);
+          _sharedPreferenceService.setRefreshToken(refreshToken);
           _navigationService
               .clearStackAndShowView(const BottomNavbarView(viewIndex: 0));
         }
       }
-    } catch (error) {
+    } catch (error, es) {
       debugPrint(error.toString());
+      debugPrint(es.toString());
       _toastService
           .callToast("Something went wrong, Please try after sometime");
     }

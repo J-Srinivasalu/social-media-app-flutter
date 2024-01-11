@@ -12,6 +12,14 @@ class SharedPreferenceService implements InitializableDependency {
     await _sharedPreferences?.setString(LOCAL_STORAGE_KEY_TOKEN, token);
   }
 
+  String? getRefreshToken() =>
+      _sharedPreferences?.getString(LOCAL_STORAGE_KEY_REFRESH_TOKEN);
+
+  Future<void> setRefreshToken(String refreshToken) async {
+    await _sharedPreferences?.setString(
+        LOCAL_STORAGE_KEY_REFRESH_TOKEN, refreshToken);
+  }
+
   @override
   Future<void> init() async {
     if (_instance == null) {

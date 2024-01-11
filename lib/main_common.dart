@@ -7,6 +7,7 @@ import 'package:social_media_app/models/helpers/flavor_config.dart';
 import 'package:social_media_app/providers/chat_provider.dart';
 import 'package:social_media_app/providers/post_provider.dart';
 import 'package:social_media_app/providers/profile_provider.dart';
+import 'package:social_media_app/services/connectivity_service.dart';
 import 'package:social_media_app/services/environment_service.dart';
 import 'package:social_media_app/utils/constants.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
@@ -38,6 +39,14 @@ class SocialMediaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        StreamProvider<ConnectivityStatus>(
+          initialData: ConnectivityStatus.OFFLINE,
+          create: (_) {
+            final connectionService = locator<ConnectivityService>();
+            connectionService.setConnectivityService();
+            return connectionService.connectionStatusController.stream;
+          },
+        ),
         ChangeNotifierProvider<ProfileProvider>(
             create: ((context) => ProfileProvider())),
         ChangeNotifierProvider<PostProvider>(

@@ -10,6 +10,7 @@ import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
 import 'package:social_media_app/views/home/home_view.dart';
 import 'package:social_media_app/views/profile/profile_view.dart';
+import 'package:social_media_app/widgets/connection_aware_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'dart:math' as math;
 
@@ -31,123 +32,125 @@ class BottomNavbarView extends StatelessWidget {
     final postProvider = Provider.of<PostProvider>(context);
     final profileProvider = Provider.of<ProfileProvider>(context);
     final chatProvider = Provider.of<ChatProvider>(context);
-    return ViewModelBuilder<BottomNavbarViewModel>.reactive(
-      builder: (context, model, child) => model.isBusy
-          ? Scaffold(
-              backgroundColor: Colors.white,
-              body: Column(
-                children: [
-                  Expanded(child: Container()),
-                  const CircularProgressIndicator(
-                    color: CustomColors.lightBlueColor,
-                  ),
-                  model.serverDown
-                      ? Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            child: const Text(
-                              "This might take some time, as the backend server goes down after 15 minutes of inactivity. Thanks for your patience.",
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        )
-                      : Expanded(child: Container()),
-                ],
-              ))
-          : WillPopScope(
-              child: Scaffold(
-                resizeToAvoidBottomInset: false,
-                appBar: AppBar(
-                  elevation: 2,
-                  title: const Text(
-                    "SMA",
-                    style: TextStyle(color: CustomColors.primaryColor),
-                  ),
-                  actions: [
-                    IconButton(
-                      onPressed: () => model.navigateToChats(),
-                      icon: const Icon(Icons.chat),
-                    ),
-                  ],
-                ),
-                body: IndexedStack(
-                  index: model.index,
+    return ConnectionAwareWidget(
+      child: ViewModelBuilder<BottomNavbarViewModel>.reactive(
+        builder: (context, model, child) => model.isBusy
+            ? Scaffold(
+                backgroundColor: Colors.white,
+                body: Column(
                   children: [
-                    Navigator(
-                      key: model.homePageKey,
-                      onGenerateRoute: (route) => MaterialPageRoute(
-                        settings: route,
-                        builder: (context) => const HomeView(),
-                      ),
+                    Expanded(child: Container()),
+                    const CircularProgressIndicator(
+                      color: CustomColors.lightBlueColor,
                     ),
-                    Navigator(
-                      key: model.profilePageKey,
-                      onGenerateRoute: (route) => MaterialPageRoute(
-                        settings: route,
-                        builder: (context) => const ProfileView(),
-                      ),
-                    ),
+                    model.serverDown
+                        ? Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              child: const Text(
+                                "This might take some time, as the backend server goes down after 15 minutes of inactivity. Thanks for your patience.",
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )
+                        : Expanded(child: Container()),
                   ],
-                ),
-                floatingActionButton: FloatingActionButton(
-                  shape: const CircleBorder(),
-                  heroTag: "CreatePostView",
-                  backgroundColor: CustomColors.primaryColor,
-                  child: Container(
-                    width: 35,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(17),
+                ))
+            : WillPopScope(
+                child: Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  appBar: AppBar(
+                    elevation: 2,
+                    title: const Text(
+                      "SMA",
+                      style: TextStyle(color: CustomColors.primaryColor),
                     ),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
-                  onPressed: () async {
-                    model.navigateToCreatePost();
-                  },
-                ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerDocked,
-                bottomNavigationBar: BottomAppBar(
-                  surfaceTintColor: Colors.white,
-                  height: 72,
-                  shape: const CustomNotchedRectangle(),
-                  notchMargin: 5.0,
-                  clipBehavior: Clip.antiAlias,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _bottomBarItem(
-                        index: 0,
-                        name: "Home",
-                        icon: Icons.home_filled,
-                        model: model,
-                      ),
-                      const SizedBox(),
-                      _bottomBarItem(
-                        index: 1,
-                        name: "Profile",
-                        icon: Icons.person,
-                        model: model,
+                    actions: [
+                      IconButton(
+                        onPressed: () => model.navigateToChats(),
+                        icon: const Icon(Icons.chat),
                       ),
                     ],
                   ),
+                  body: IndexedStack(
+                    index: model.index,
+                    children: [
+                      Navigator(
+                        key: model.homePageKey,
+                        onGenerateRoute: (route) => MaterialPageRoute(
+                          settings: route,
+                          builder: (context) => const HomeView(),
+                        ),
+                      ),
+                      Navigator(
+                        key: model.profilePageKey,
+                        onGenerateRoute: (route) => MaterialPageRoute(
+                          settings: route,
+                          builder: (context) => const ProfileView(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  floatingActionButton: FloatingActionButton(
+                    shape: const CircleBorder(),
+                    heroTag: "CreatePostView",
+                    backgroundColor: CustomColors.primaryColor,
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(17),
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    onPressed: () async {
+                      model.navigateToCreatePost();
+                    },
+                  ),
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.centerDocked,
+                  bottomNavigationBar: BottomAppBar(
+                    surfaceTintColor: Colors.white,
+                    height: 72,
+                    shape: const CustomNotchedRectangle(),
+                    notchMargin: 5.0,
+                    clipBehavior: Clip.antiAlias,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _bottomBarItem(
+                          index: 0,
+                          name: "Home",
+                          icon: Icons.home_filled,
+                          model: model,
+                        ),
+                        const SizedBox(),
+                        _bottomBarItem(
+                          index: 1,
+                          name: "Profile",
+                          icon: Icons.person,
+                          model: model,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
+                onWillPop: () => _onBackPressed(model, context),
               ),
-              onWillPop: () => _onBackPressed(model, context),
-            ),
-      viewModelBuilder: () => BottomNavbarViewModel(),
-      onViewModelReady: (model) => model.initialize(
-        viewIndex,
-        profileProvider,
-        postProvider,
-        data,
-        chatProvider,
-        notificationAction,
+        viewModelBuilder: () => BottomNavbarViewModel(),
+        onViewModelReady: (model) => model.initialize(
+          viewIndex,
+          profileProvider,
+          postProvider,
+          data,
+          chatProvider,
+          notificationAction,
+        ),
       ),
     );
   }

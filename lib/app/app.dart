@@ -1,6 +1,7 @@
 // import 'package:stacked/stacked_annotations.dart';
 
 import 'package:social_media_app/services/api_service.dart';
+import 'package:social_media_app/services/connectivity_service.dart';
 import 'package:social_media_app/services/environment_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/socket_io_service.dart';
@@ -41,6 +42,7 @@ import 'package:stacked_services/stacked_services.dart';
   LazySingleton(classType: ToastService),
   LazySingleton(classType: ApiService),
   LazySingleton(classType: SocketIOService),
+  LazySingleton(classType: ConnectivityService),
   InitializableSingleton(
     classType: SharedPreferenceService,
   ),

@@ -19,13 +19,15 @@ class ApiService {
   final _navigationService = locator<NavigationService>();
 
   Future<ServerResponse> _postRequest(String endpoint, dynamic body) async {
+    debugPrint("Request body: $body");
     final response = await http.post(
       Uri.parse(endpoint),
       headers: _getHeadersJson(),
       body: json.encode(body),
     );
-    _checkServerResponse(response: response);
-    return ServerResponse(response: response);
+
+    return _checkServerResponse(
+        response: response, retryApiCall: () => _postRequest(endpoint, body));
   }
 
   Future<ServerResponse> _getRequest(String endpoint,
@@ -35,8 +37,10 @@ class ApiService {
       uri,
       headers: _getHeadersJson(),
     );
-    _checkServerResponse(response: response);
-    return ServerResponse(response: response);
+
+    return _checkServerResponse(
+        response: response,
+        retryApiCall: () => _getRequest(endpoint, params: params));
   }
 
   Map<String, String> _getHeadersJson() {
@@ -66,6 +70,18 @@ class ApiService {
     return await _postRequest(loginEndpoint, body);
   }
 
+  Future<ServerResponse> logout() async {
+    return await _postRequest(logoutEndpoint, {});
+  }
+
+  Future<ServerResponse> refreshAccessToken() async {
+    final refreshToken = _sharedPreferenceService.getRefreshToken();
+    final body = {
+      "refreshToken": refreshToken,
+    };
+    return await _postRequest(refreshAccessTokenEndpoint, body);
+  }
+
   Future<ServerResponse> uploadPost(
       List<String> mediaPaths, String content) async {
     var request = http.MultipartRequest('POST', Uri.parse(uploadPostEndpoint));
@@ -93,8 +109,10 @@ class ApiService {
     request.fields['content'] = content;
 
     final response = await http.Response.fromStream(await request.send());
-    _checkServerResponse(response: response);
-    return ServerResponse(response: response);
+
+    return _checkServerResponse(
+        response: response,
+        retryApiCall: () => uploadPost(mediaPaths, content));
   }
 
   Future<ServerResponse> likePost(String postId) async {
@@ -160,8 +178,10 @@ class ApiService {
     }
 
     final response = await http.Response.fromStream(await request.send());
-    _checkServerResponse(response: response);
-    return ServerResponse(response: response);
+
+    return _checkServerResponse(
+        response: response,
+        retryApiCall: () => updateUser(fullName, profilePicPath));
   }
 
   Future<ServerResponse> getUser() async {
@@ -221,8 +241,7 @@ class ApiService {
     return await _postRequest(messageEndpoint, body);
   }
 
-  Future<ServerResponse> getChats(
-      {int offset = 0, int limit = 10}) async {
+  Future<ServerResponse> getChats({int offset = 0, int limit = 10}) async {
     final params = {
       "offset": offset.toString(),
       "limit": limit.toString(),
@@ -240,17 +259,33 @@ class ApiService {
     return await _getRequest(messageEndpoint, params: params);
   }
 
-  void _checkServerResponse({required http.Response response}) {
-    debugPrint("${response.body} ${response.statusCode}");
+  Future<ServerResponse> _checkServerResponse(
+      {required http.Response response,
+      required Future<ServerResponse> Function() retryApiCall}) async {
+    debugPrint("Response: ${response.body} ${response.statusCode}");
 
     final data = ResponseGeneral.fromJson(
         json.decode(response.body), response.statusCode);
     if (data.detail?.success != true) {
-      _toastService.callToast(data.detail?.message);
       if (response.statusCode == 401) {
+        debugPrint("Access token expire");
+        final refreshResponse = await refreshAccessToken();
+        debugPrint(
+            "refresh access token message: ${refreshResponse.responseGeneral.detail?.message}");
+        if (refreshResponse.isSuccessful()) {
+          final token = refreshResponse.responseGeneral.detail?.data["token"];
+          final refreshToken =
+              refreshResponse.responseGeneral.detail?.data["refreshToken"];
+          _sharedPreferenceService.setToken(token);
+          _sharedPreferenceService.setRefreshToken(refreshToken);
+          return await retryApiCall();
+        }
         _sharedPreferenceService.setToken("");
         _navigationService.clearStackAndShowView(LoginView());
+      } else {
+        _toastService.callToast(data.detail?.message);
       }
     }
+    return ServerResponse(response: response);
   }
 }

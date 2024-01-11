@@ -126,8 +126,8 @@ flutter run --flavor dev -t lib/main_dev.dart
 |         Notification       |        Chat Screen         |       Chat Screen       |       Chat Screen       |
 | :------------------------: | :---------------------------: | :-------------------------------: | :--------------------------------: |
 | <img src="screenshots/notification.jpg" alt="Notification" width="200"/> | <img src="screenshots/chat.jpeg" alt="chat screen" width="200"/> | <img src="screenshots/typing.jpeg" alt="typing" width="200"/> | <img src="screenshots/online.jpeg" alt="Online" width="200"/> |
-|        Chat Screen        |
-| :------------------------: |
-| <img src="screenshots/last_seen.jpeg" alt="last seen" width="200"/> |
+|        Chat Screen        |     No Internet Screen     |
+| :------------------------: | :------------------------: |
+| <img src="screenshots/last_seen.jpeg" alt="last seen" width="200"/> | <img src="screenshots/no_internet.jpeg" alt="last seen" width="200"/> |
 
 Feel free to reach out for any questions or feedback. Happy coding!

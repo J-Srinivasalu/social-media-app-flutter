@@ -9,6 +9,7 @@ import 'package:social_media_app/providers/chat_provider.dart';
 import 'package:social_media_app/providers/profile_provider.dart';
 import 'package:social_media_app/utils/custom_colors.dart';
 import 'package:social_media_app/utils/helper_functions.dart';
+import 'package:social_media_app/widgets/connection_aware_widget.dart';
 import 'package:stacked/stacked.dart';
 
 import 'individual_chat_viewmodel.dart';
@@ -27,170 +28,173 @@ class IndividualChatView extends StatelessWidget {
     final profileProvider = Provider.of<ProfileProvider>(context);
     final chatProvider = Provider.of<ChatProvider>(context);
     return ViewModelBuilder<IndividualChatViewModel>.reactive(
-      builder: (context, model, child) => LoadingOverlay(
-        isLoading: model.isBusy,
-        progressIndicator: const CircularProgressIndicator(),
-        color: Colors.black,
-        opacity: 0.2,
-        child: Scaffold(
-          appBar: AppBar(
-            title: ListTile(
-              leading: Container(
-                height: 40,
-                width: 40,
-                clipBehavior: Clip.hardEdge,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: CustomColors.primaryColor),
-                child: CachedNetworkImage(
-                  imageUrl: friend.profilePic ?? "",
-                  width: 40,
+      builder: (context, model, child) => ConnectionAwareWidget(
+        child: LoadingOverlay(
+          isLoading: model.isBusy,
+          progressIndicator: const CircularProgressIndicator(),
+          color: Colors.black,
+          opacity: 0.2,
+          child: Scaffold(
+            appBar: AppBar(
+              title: ListTile(
+                leading: Container(
                   height: 40,
-                  fit: BoxFit.cover,
-                  errorWidget: (context, url, error) {
-                    debugPrint(error.toString());
-                    debugPrint(url.toString());
-                    return const Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 30,
-                    );
-                  },
-                  progressIndicatorBuilder: (context, url, progress) {
-                    return Container(
-                      width: 20,
-                      height: 20,
-                      alignment: Alignment.center,
-                      child: const CircularProgressIndicator(
-                        color: CustomColors.whiteColor,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              title: Text(
-                friend.fullName ?? "",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                model.isTyping
-                    ? "typing..."
-                    : friend.isOnline
-                        ? "Online"
-                        : getTimePassed(friend.updatedAt),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: CustomColors.blueColor,
-                ),
-              ),
-            ),
-          ),
-          body: Stack(children: [
-            Column(
-              children: [
-                Expanded(
-                  child: SmartRefresher(
-                    enablePullDown: true,
-                    enablePullUp: false,
-                    controller: model.messageRefreshController,
-                    scrollController: model.messagesScrollController,
-                    onRefresh: () async {
-                      if (!model.isLoading) {
-                        await model.fetchMessages(chatId);
-                      }
+                  width: 40,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: CustomColors.primaryColor),
+                  child: CachedNetworkImage(
+                    imageUrl: friend.profilePic ?? "",
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) {
+                      debugPrint(error.toString());
+                      debugPrint(url.toString());
+                      return const Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: 30,
+                      );
                     },
-                    child: ListView.builder(
-                      itemCount: model.messages.length,
-                      itemBuilder: (context, index) =>
-                          _message(profileProvider, model, index),
-                    ),
+                    progressIndicatorBuilder: (context, url, progress) {
+                      return Container(
+                        width: 20,
+                        height: 20,
+                        alignment: Alignment.center,
+                        child: const CircularProgressIndicator(
+                          color: CustomColors.whiteColor,
+                        ),
+                      );
+                    },
                   ),
                 ),
-                const SizedBox(
-                  height: 50,
+                title: Text(
+                  friend.fullName ?? "",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-              ],
+                subtitle: Text(
+                  model.isTyping
+                      ? "typing..."
+                      : friend.isOnline
+                          ? "Online"
+                          : getTimePassed(friend.updatedAt),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: CustomColors.blueColor,
+                  ),
+                ),
+              ),
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Column(
+            body: Stack(children: [
+              Column(
                 children: [
-                  const Divider(
-                    height: 1,
-                    thickness: 1,
-                    color: CustomColors.lightGreyColor,
+                  Expanded(
+                    child: SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: false,
+                      controller: model.messageRefreshController,
+                      scrollController: model.messagesScrollController,
+                      onRefresh: () async {
+                        if (!model.isLoading) {
+                          await model.fetchMessages(chatId);
+                        }
+                      },
+                      child: ListView.builder(
+                        itemCount: model.messages.length,
+                        itemBuilder: (context, index) =>
+                            _message(profileProvider, model, index),
+                      ),
+                    ),
                   ),
-                  Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.only(
-                      top: 8,
-                      bottom: 10,
-                      left: 16,
-                      right: 16,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                              right: 8,
-                            ),
-                            child: TextFormField(
-                              controller: model.messageController,
-                              keyboardType: TextInputType.multiline,
-                              maxLines: 3,
-                              minLines: 1,
-                              onTap: () {
-                                model.moveToLast();
-                              },
-                              onEditingComplete: () =>
-                                  debugPrint("keyboard came down"),
-                              style: const TextStyle(
-                                  fontSize: 16, color: CustomColors.blackColor),
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.lightGreyColor),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(24),
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: CustomColors.lightGreyColor),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(24),
-                                  ),
-                                ),
-                                hintText: "what's in your mind...",
-                                hintStyle: TextStyle(
-                                    color: CustomColors.lightGreyColor),
-                              ),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () => model.sendMessage(
-                            friend,
-                            chatId,
-                            chatProvider,
-                            profileProvider,
-                          ),
-                          child: const Text(
-                            "Send",
-                            style: TextStyle(
-                                color: CustomColors.primaryColor,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ],
-                    ),
+                  const SizedBox(
+                    height: 50,
                   ),
                 ],
               ),
-            )
-          ]),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: [
+                    const Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: CustomColors.lightGreyColor,
+                    ),
+                    Container(
+                      color: Colors.white,
+                      padding: const EdgeInsets.only(
+                        top: 8,
+                        bottom: 10,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                right: 8,
+                              ),
+                              child: TextFormField(
+                                controller: model.messageController,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: 3,
+                                minLines: 1,
+                                onTap: () {
+                                  model.moveToLast();
+                                },
+                                onEditingComplete: () =>
+                                    debugPrint("keyboard came down"),
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: CustomColors.blackColor),
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.lightGreyColor),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(24),
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: CustomColors.lightGreyColor),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(24),
+                                    ),
+                                  ),
+                                  hintText: "what's in your mind...",
+                                  hintStyle: TextStyle(
+                                      color: CustomColors.lightGreyColor),
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => model.sendMessage(
+                              friend,
+                              chatId,
+                              chatProvider,
+                              profileProvider,
+                            ),
+                            child: const Text(
+                              "Send",
+                              style: TextStyle(
+                                  color: CustomColors.primaryColor,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ]),
+          ),
         ),
       ),
       viewModelBuilder: () => IndividualChatViewModel(),

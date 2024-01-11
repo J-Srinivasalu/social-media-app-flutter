@@ -36,17 +36,21 @@ class RegisterViewModel extends BaseViewModel {
 
       if (response.isSuccessful()) {
         final token = response.responseGeneral.detail?.data['token'];
+        final refreshToken =
+            response.responseGeneral.detail?.data['refreshToken'];
         debugPrint(token);
         if (token != null) {
           _sharedPreferenceService.setToken(token);
+          _sharedPreferenceService.setRefreshToken(refreshToken);
           Future.delayed(Duration.zero, () {
             _navigationService
                 .clearStackAndShowView(const BottomNavbarView(viewIndex: 0));
           });
         }
       }
-    } catch (error) {
+    } catch (error, es) {
       debugPrint(error.toString());
+      debugPrint(es.toString());
       _toastService
           .callToast("Something went wrong, Please try after sometime");
     }

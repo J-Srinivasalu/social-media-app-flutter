@@ -3,6 +3,8 @@ String rootApiUrl = "";
 //auth
 final registerEndpoint = "$rootApiUrl/auth/register";
 final loginEndpoint = "$rootApiUrl/auth/login";
+final logoutEndpoint = "$rootApiUrl/auth/logout";
+final refreshAccessTokenEndpoint = "$rootApiUrl/auth/refresh-token";
 
 //user
 final userEndpoint = "$rootApiUrl/user";
@@ -32,3 +34,4 @@ final messageEndpoint = "$rootApiUrl/chat/message";
 // final messageStatusEndpoint = "$rootApiUrl/chat//message/status";
 
 const LOCAL_STORAGE_KEY_TOKEN = "token";
+const LOCAL_STORAGE_KEY_REFRESH_TOKEN = "refreshToken";
