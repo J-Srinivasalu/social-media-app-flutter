@@ -9,7 +9,7 @@ import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/chat_provider.dart';
 import 'package:social_media_app/providers/post_provider.dart';
 import 'package:social_media_app/providers/profile_provider.dart';
-import 'package:social_media_app/services/firebase_service.dart';
+import 'package:social_media_app/services/notification_service.dart';
 import 'package:social_media_app/services/shared_preference_service.dart';
 import 'package:social_media_app/services/socket_io_service.dart';
 import 'package:social_media_app/utils/socket_events.dart';
@@ -93,6 +93,56 @@ class BottomNavbarViewModel extends BaseViewModel {
       (userId) {
         debugPrint("${ChatEventEnum.USER_OFFLINE_EVENT} $userId");
         chatProvider.updateUserStatus(userId, false);
+      },
+    );
+
+    _socketIOService.socket?.on(
+      ChatEventEnum.VIDEO_CALL_OFFER_EVENT,
+      (data) {
+        debugPrint("ChatEventEnum.VIDEO_CALL_OFFER_EVENT : $data");
+        final message = ChatMessage.fromMap(data["message"]);
+        // videoCallOffer = offer;
+        chatProvider.updateLastMessage(message);
+        createNotification(
+          message.chat.hashCode,
+          message.sender?.fullName ?? "Unknown",
+          "Video call",
+          true,
+          data,
+        );
+      },
+    );
+
+    _socketIOService.socket?.on(
+      ChatEventEnum.VIDEO_CALL_MISSED_EVENT,
+      (data) {
+        debugPrint("ChatEventEnum.VIDEO_CALL_MISSED_EVENT");
+        debugPrint("ChatEventEnum.VIDEO_CALL_MISSED_EVENT : $data");
+        final message = ChatMessage.fromMap(data["message"]);
+        debugPrint(
+            "BottomNavbarViewmode: initialize - video call missed: ${message.toMap().toString()}");
+        data["isCall"] = false;
+        cancelNotification(message.chat.hashCode);
+        createNotification(
+          message.chat.hashCode,
+          message.sender?.fullName ?? "Unknown",
+          "Missed video call",
+          false,
+          data,
+        );
+      },
+    );
+
+    _socketIOService.socket?.on(
+      ChatEventEnum.VIDEO_CALL_ENDED_EVENT,
+      (data) {
+        debugPrint("ChatEventEnum.VIDEO_CALL_MISSED_EVENT");
+        debugPrint("ChatEventEnum.VIDEO_CALL_MISSED_EVENT : $data");
+        final message = ChatMessage.fromMap(data["message"]);
+        debugPrint(
+            "BottomNavbarViewmode: initialize - video call missed: ${message.toMap().toString()}");
+        data["isCall"] = false;
+        chatProvider.updateLastMessage(message);
       },
     );
   }

@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 Future<File?> getFromGallery() async {
@@ -26,4 +28,10 @@ Future<File?> getFromCamera() async {
     image = File(pickedFile.path);
   }
   return image;
+}
+
+Future<Uint8List> convertAssetImageToUint8List(String assetPath) async {
+  ByteData data = await rootBundle.load(assetPath);
+  List<int> bytes = data.buffer.asUint8List();
+  return Uint8List.fromList(bytes);
 }

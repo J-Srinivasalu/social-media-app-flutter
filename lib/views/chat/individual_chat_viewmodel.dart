@@ -11,10 +11,13 @@ import 'package:social_media_app/services/api_service.dart';
 import 'package:social_media_app/services/socket_io_service.dart';
 import 'package:social_media_app/services/toast_service.dart';
 import 'package:social_media_app/utils/socket_events.dart';
+import 'package:social_media_app/views/chat/video/video_call_view.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class IndividualChatViewModel extends BaseViewModel {
   final _apiService = locator<ApiService>();
+  final _navigationService = locator<NavigationService>();
   final _toastService = locator<ToastService>();
   final _socketIOService = locator<SocketIOService>();
   final List<ChatMessage> _messages = [];
@@ -87,6 +90,84 @@ class IndividualChatViewModel extends BaseViewModel {
       sendTypingEvent(chatId);
       debounceStopTyping(chatId);
     });
+
+    _socketIOService.socket?.on(
+      ChatEventEnum.VIDEO_CALL_OFFER_EVENT,
+      (data) {
+        debugPrint(
+            "IndividualChatViewModel: ChatEventEnum.VIDEO_CALL_OFFER_EVENT : $data");
+        final message = ChatMessage.fromMap(data["message"]);
+        if (chatId == message.chat) {
+          videoCallCallback(message);
+        }
+      },
+    );
+
+    _socketIOService.socket?.on(
+      ChatEventEnum.VIDEO_CALL_REJECT_EVENT,
+      (data) {
+        try {
+          debugPrint(
+              "IndividualChatViewModel: ChatEventEnum.VIDEO_CALL_REJECT_EVENT : $data");
+          final message = ChatMessage.fromMap(data["message"]);
+          if (chatId == message.chat) {
+            _messages[0].content = message.content;
+            notifyListeners();
+            chatProvider.updateLastMessage(message);
+          }
+        } catch (error, es) {
+          debugPrint(
+              "IndividualChatViewModel: ChatEventEnum.VIDEO_CALL_REJECT_EVENT ERROR");
+          debugPrint(error.toString());
+          debugPrint(es.toString());
+        }
+      },
+    );
+
+    _socketIOService.socket?.on(
+      ChatEventEnum.VIDEO_CALL_MISSED_EVENT,
+      (data) {
+        try {
+          debugPrint(
+              "IndividualChatViewModel: ChatEventEnum.VIDEO_CALL_MISSED_EVENT : $data");
+          final message = ChatMessage.fromMap(data["message"]);
+          if (chatId == message.chat) {
+            _messages[0].content = message.content;
+            notifyListeners();
+            chatProvider.updateLastMessage(message);
+          }
+        } catch (error, es) {
+          debugPrint(
+              "IndividualChatViewModel: ChatEventEnum.VIDEO_CALL_MISSED_EVENT ERROR");
+          debugPrint(error.toString());
+          debugPrint(es.toString());
+        }
+      },
+    );
+
+    _socketIOService.socket?.on(
+      ChatEventEnum.VIDEO_CALL_ENDED_EVENT,
+      (data) {
+        try {
+          debugPrint(
+              "IndividualChatViewModel: ChatEventEnum.VIDEO_CALL_ENDED_EVENT : $data");
+          debugPrint(
+              "IndividualChatViewModel: ChatEventEnum.VIDEO_CALL_ENDED_EVENT chatId: $chatId");
+          final message = ChatMessage.fromMap(data["message"]);
+          if (chatId == message.chat) {
+            _messages.firstWhere((m) => m.id == message.id).content =
+                message.content;
+            chatProvider.updateLastMessage(message);
+            notifyListeners();
+          }
+        } catch (error, es) {
+          debugPrint(
+              "IndividualChatViewModel: ChatEventEnum.VIDEO_CALL_ENDED_EVENT ERROR");
+          debugPrint(error.toString());
+          debugPrint(es.toString());
+        }
+      },
+    );
 
     runBusyFuture(fetchMessages(chatId)).then((value) => moveToLast());
   }
@@ -230,5 +311,37 @@ class IndividualChatViewModel extends BaseViewModel {
       updateIsLoading(false);
       debugPrint("loading finished");
     }
+  }
+
+  void videoCallCallback(ChatMessage? newMessage) {
+    try {
+      debugPrint(
+          "IndividualChatViewModel: videoCallCallback - message $newMessage");
+      if (newMessage == null) {
+        debugPrint(
+            "IndividualChatViewModel: videoCallCallback - message was null");
+        return;
+      }
+      _messages.insert(0, newMessage);
+      debugPrint(
+          "IndividualChatViewModel: videoCallCallback - message inserted");
+
+      notifyListeners();
+      moveToLast();
+    } catch (error, es) {
+      debugPrint("IndividualChatViewModel: videoCallCallback - ERROR");
+      debugPrint(error.toString());
+      debugPrint(es.toString());
+    }
+    // moveToLast();
+  }
+
+  void navigateToVideoCallView(String chatId, User user) async {
+    final newMessage = await _navigationService.navigateToView(VideoCallView(
+      chatId: chatId,
+      user: user,
+    ));
+
+    videoCallCallback(newMessage);
   }
 }

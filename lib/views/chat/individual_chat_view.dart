@@ -84,6 +84,11 @@ class IndividualChatView extends StatelessWidget {
                     color: CustomColors.blueColor,
                   ),
                 ),
+                trailing: IconButton(
+                    onPressed: () {
+                      model.navigateToVideoCallView(chatId, friend);
+                    },
+                    icon: const Icon(Icons.videocam_rounded)),
               ),
             ),
             body: Stack(children: [
@@ -215,6 +220,7 @@ _message(
 }
 
 Widget messageByOthers(IndividualChatViewModel model, int index) {
+  bool isCall = model.messages[index].offer != null;
   return Padding(
     padding: const EdgeInsets.only(right: 100, left: 16, bottom: 44),
     child: Column(
@@ -222,9 +228,12 @@ Widget messageByOthers(IndividualChatViewModel model, int index) {
       children: [
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: CustomColors.blueDarkestColor,
-            borderRadius: BorderRadius.only(
+            border: isCall
+                ? Border.all(color: CustomColors.blueDarkerColor, width: 3)
+                : const Border(),
+            borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(8),
               topRight: Radius.circular(18),
               topLeft: Radius.circular(18),
@@ -248,6 +257,7 @@ Widget messageByOthers(IndividualChatViewModel model, int index) {
 
 Widget messageByUser(IndividualChatViewModel model, int index) {
   var status = model.messages[index].status;
+  bool isCall = model.messages[index].offer != null;
   return Container(
     padding: const EdgeInsets.only(left: 100, right: 16, bottom: 44),
     child: Column(
@@ -255,9 +265,12 @@ Widget messageByUser(IndividualChatViewModel model, int index) {
       children: [
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: CustomColors.whiteColor,
-            borderRadius: BorderRadius.only(
+            border: isCall
+                ? Border.all(color: CustomColors.lightShadeGreyColor, width: 3)
+                : const Border(),
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(18),
               bottomLeft: Radius.circular(18),
               topRight: Radius.circular(18),
@@ -276,10 +289,11 @@ Widget messageByUser(IndividualChatViewModel model, int index) {
               getTimePassed(model.messages[index].createdAt),
               style: const TextStyle(color: CustomColors.greyColor),
             ),
-            Text(
-              status != null ? " · $status" : "",
-              style: const TextStyle(color: CustomColors.greyColor),
-            ),
+            if (!isCall)
+              Text(
+                status != null ? " · $status" : "",
+                style: const TextStyle(color: CustomColors.greyColor),
+              ),
           ],
         ),
       ],

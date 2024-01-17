@@ -9,6 +9,8 @@ import 'package:social_media_app/services/toast_service.dart';
 import 'package:social_media_app/views/chat/chats_view.dart';
 import 'package:social_media_app/views/chat/individual_chat_view.dart';
 import 'package:social_media_app/views/chat/new_message_view.dart';
+import 'package:social_media_app/views/chat/video/video_call_offer_view.dart';
+import 'package:social_media_app/views/chat/video/video_call_view.dart';
 import 'package:social_media_app/views/create_post/create_post_view.dart';
 import 'package:social_media_app/views/friends/friend_requests_view.dart';
 import 'package:social_media_app/views/friends/friend_view.dart';
@@ -36,6 +38,8 @@ import 'package:stacked_services/stacked_services.dart';
   MaterialRoute(page: ChatsView, name: 'chatsViewRoute'),
   MaterialRoute(page: IndividualChatView, name: 'individualChatViewRoute'),
   MaterialRoute(page: NewMessageView, name: 'newMessageViewRoute'),
+  MaterialRoute(page: VideoCallView, name: 'videoCallViewRoute'),
+  MaterialRoute(page: VideoCallOfferView, name: 'videoCallOfferViewRoute'),
 ], dependencies: [
   LazySingleton(classType: EnvironmentService),
   LazySingleton(classType: NavigationService),

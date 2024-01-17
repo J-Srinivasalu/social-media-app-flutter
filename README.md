@@ -35,6 +35,10 @@ The mobile app allows users to interact with the social media platform on the go
 
    - Enable real-time chat with friends.(socket.io)
 
+8. **Video calling (P2P):**
+
+   - Real time video calling using webRTC.
+
 ## Screens
 
 1. **Login:**
@@ -78,6 +82,10 @@ The mobile app allows users to interact with the social media platform on the go
    - send and receive messages to friends in real time.
    - typing and online indicators.
 
+6 **Video call:**
+   - Enable user to make video calls with friends
+
+
 ## Future Plans
 
 1. **Upload Gifs, Videos, and PDFs:**
@@ -96,6 +104,17 @@ The mobile app allows users to interact with the social media platform on the go
 
    - send media files like image, videos, and other files.
 
+5. **only Audio call:**
+
+   - Make person to person audio calls.
+
+6. **Add more options in Calling:**
+
+   - Like switch camera, mute audio, stop video, etc.
+
+7. **Replay to message:**
+
+   - Reply to specific message.
 
 ## Getting Started
 
@@ -126,8 +145,13 @@ flutter run --flavor dev -t lib/main_dev.dart
 |         Notification       |        Chat Screen         |       Chat Screen       |       Chat Screen       |
 | :------------------------: | :---------------------------: | :-------------------------------: | :--------------------------------: |
 | <img src="screenshots/notification.jpg" alt="Notification" width="200"/> | <img src="screenshots/chat.jpeg" alt="chat screen" width="200"/> | <img src="screenshots/typing.jpeg" alt="typing" width="200"/> | <img src="screenshots/online.jpeg" alt="Online" width="200"/> |
-|        Chat Screen        |     No Internet Screen     |
-| :------------------------: | :------------------------: |
-| <img src="screenshots/last_seen.jpeg" alt="last seen" width="200"/> | <img src="screenshots/no_internet.jpeg" alt="last seen" width="200"/> |
+
+|        Chat Screen        |     No Internet Screen     |        Video Call        |     Video Call       |
+| :------------------------: | :------------------------: | :------------------------: | :------------------------: |
+| <img src="screenshots/last_seen.jpeg" alt="last seen" width="200"/> | <img src="screenshots/no_internet.jpeg" alt="last seen" width="200"/> | <img src="screenshots/video_call1.jpeg" alt="send video call request" width="200"/> | <img src="screenshots/video_call2.jpeg" alt="receive video call requets" width="200"/> |
+
+|         Video Call       |       Video Call        |       Video Call         |
+| :------------------------: | :---------------------------: | :-------------------------------: | :--------------------------------: |
+| <img src="screenshots/video_call3.jpg" alt="video call notification" width="200"/> | <img src="screenshots/video_call4.jpeg" alt="incoming video call screen" width="200"/> | <img src="screenshots/video_call_chat.jpeg" alt="video call details in chat" width="200"/> |
 
 Feel free to reach out for any questions or feedback. Happy coding!

@@ -5,14 +5,17 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i15;
+import 'package:flutter/material.dart' as _i17;
 import 'package:flutter/material.dart';
-import 'package:social_media_app/models/notification_action.dart' as _i16;
-import 'package:social_media_app/models/post.dart' as _i17;
-import 'package:social_media_app/models/user.dart' as _i18;
+import 'package:social_media_app/models/notification_action.dart' as _i18;
+import 'package:social_media_app/models/post.dart' as _i19;
+import 'package:social_media_app/models/user.dart' as _i20;
 import 'package:social_media_app/views/chat/chats_view.dart' as _i12;
 import 'package:social_media_app/views/chat/individual_chat_view.dart' as _i13;
 import 'package:social_media_app/views/chat/new_message_view.dart' as _i14;
+import 'package:social_media_app/views/chat/video/video_call_offer_view.dart'
+    as _i16;
+import 'package:social_media_app/views/chat/video/video_call_view.dart' as _i15;
 import 'package:social_media_app/views/create_post/create_post_view.dart'
     as _i4;
 import 'package:social_media_app/views/friends/friend_requests_view.dart'
@@ -28,7 +31,7 @@ import 'package:social_media_app/views/public_profile/public_profile_view.dart'
 import 'package:social_media_app/views/register/register_view.dart' as _i6;
 import 'package:social_media_app/views/splash/splash_view.dart' as _i2;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i19;
+import 'package:stacked_services/stacked_services.dart' as _i21;
 
 class Routes {
   static const splashView = '/';
@@ -57,6 +60,10 @@ class Routes {
 
   static const newMessageViewRoute = '/new-message-view';
 
+  static const videoCallViewRoute = '/video-call-view';
+
+  static const videoCallOfferViewRoute = '/video-call-offer-view';
+
   static const all = <String>{
     splashView,
     bottomNavbarViewRoute,
@@ -71,6 +78,8 @@ class Routes {
     chatsViewRoute,
     individualChatViewRoute,
     newMessageViewRoute,
+    videoCallViewRoute,
+    videoCallOfferViewRoute,
   };
 }
 
@@ -128,18 +137,26 @@ class StackedRouter extends _i1.RouterBase {
       Routes.newMessageViewRoute,
       page: _i14.NewMessageView,
     ),
+    _i1.RouteDef(
+      Routes.videoCallViewRoute,
+      page: _i15.VideoCallView,
+    ),
+    _i1.RouteDef(
+      Routes.videoCallOfferViewRoute,
+      page: _i16.VideoCallOfferView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.SplashView(),
         settings: data,
       );
     },
     _i3.BottomNavbarView: (data) {
       final args = data.getArgs<BottomNavbarViewArguments>(nullOk: false);
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => _i3.BottomNavbarView(
             key: args.key,
             viewIndex: args.viewIndex,
@@ -149,7 +166,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.CreatePostView: (data) {
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.CreatePostView(),
         settings: data,
       );
@@ -158,7 +175,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<LoginViewArguments>(
         orElse: () => const LoginViewArguments(),
       );
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => _i5.LoginView(key: args.key),
         settings: data,
       );
@@ -167,62 +184,88 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<RegisterViewArguments>(
         orElse: () => const RegisterViewArguments(),
       );
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => _i6.RegisterView(key: args.key),
         settings: data,
       );
     },
     _i7.SinglePostView: (data) {
       final args = data.getArgs<SinglePostViewArguments>(nullOk: false);
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i7.SinglePostView(key: args.key, post: args.post),
         settings: data,
       );
     },
     _i8.EditProfileView: (data) {
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.EditProfileView(),
         settings: data,
       );
     },
     _i9.PublicProfileView: (data) {
       final args = data.getArgs<PublicProfileViewArguments>(nullOk: false);
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => _i9.PublicProfileView(
             key: args.key, userPublicProfile: args.userPublicProfile),
         settings: data,
       );
     },
     _i10.FriendRequestView: (data) {
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => const _i10.FriendRequestView(),
         settings: data,
       );
     },
     _i11.FriendView: (data) {
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => const _i11.FriendView(),
         settings: data,
       );
     },
     _i12.ChatsView: (data) {
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => const _i12.ChatsView(),
         settings: data,
       );
     },
     _i13.IndividualChatView: (data) {
       final args = data.getArgs<IndividualChatViewArguments>(nullOk: false);
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => _i13.IndividualChatView(
             key: args.key, friend: args.friend, chatId: args.chatId),
         settings: data,
       );
     },
     _i14.NewMessageView: (data) {
-      return _i15.MaterialPageRoute<dynamic>(
+      return _i17.MaterialPageRoute<dynamic>(
         builder: (context) => const _i14.NewMessageView(),
+        settings: data,
+      );
+    },
+    _i15.VideoCallView: (data) {
+      final args = data.getArgs<VideoCallViewArguments>(nullOk: false);
+      return _i17.MaterialPageRoute<dynamic>(
+        builder: (context) => _i15.VideoCallView(
+            key: args.key,
+            user: args.user,
+            chatId: args.chatId,
+            offer: args.offer,
+            messageId: args.messageId),
+        settings: data,
+      );
+    },
+    _i16.VideoCallOfferView: (data) {
+      final args = data.getArgs<VideoCallOfferViewArguments>(nullOk: false);
+      return _i17.MaterialPageRoute<dynamic>(
+        builder: (context) => _i16.VideoCallOfferView(
+            key: args.key,
+            friend: args.friend,
+            chatId: args.chatId,
+            messageId: args.messageId,
+            offer: args.offer,
+            offerAccepted: args.offerAccepted,
+            receiverId: args.receiverId),
         settings: data,
       );
     },
@@ -243,11 +286,11 @@ class BottomNavbarViewArguments {
     this.data,
   });
 
-  final _i15.Key? key;
+  final _i17.Key? key;
 
   final int viewIndex;
 
-  final _i16.NotificationAction? notificationAction;
+  final _i18.NotificationAction? notificationAction;
 
   final Map<String, String>? data;
 
@@ -277,7 +320,7 @@ class BottomNavbarViewArguments {
 class LoginViewArguments {
   const LoginViewArguments({this.key});
 
-  final _i15.Key? key;
+  final _i17.Key? key;
 
   @override
   String toString() {
@@ -299,7 +342,7 @@ class LoginViewArguments {
 class RegisterViewArguments {
   const RegisterViewArguments({this.key});
 
-  final _i15.Key? key;
+  final _i17.Key? key;
 
   @override
   String toString() {
@@ -324,9 +367,9 @@ class SinglePostViewArguments {
     required this.post,
   });
 
-  final _i15.Key? key;
+  final _i17.Key? key;
 
-  final _i17.Post post;
+  final _i19.Post post;
 
   @override
   String toString() {
@@ -351,9 +394,9 @@ class PublicProfileViewArguments {
     required this.userPublicProfile,
   });
 
-  final _i15.Key? key;
+  final _i17.Key? key;
 
-  final _i18.User userPublicProfile;
+  final _i20.User userPublicProfile;
 
   @override
   String toString() {
@@ -379,9 +422,9 @@ class IndividualChatViewArguments {
     required this.chatId,
   });
 
-  final _i15.Key? key;
+  final _i17.Key? key;
 
-  final _i18.User friend;
+  final _i20.User friend;
 
   final String chatId;
 
@@ -402,7 +445,105 @@ class IndividualChatViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i19.NavigationService {
+class VideoCallViewArguments {
+  const VideoCallViewArguments({
+    this.key,
+    required this.user,
+    required this.chatId,
+    this.offer,
+    this.messageId,
+  });
+
+  final _i17.Key? key;
+
+  final _i20.User user;
+
+  final String chatId;
+
+  final String? offer;
+
+  final String? messageId;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "user": "$user", "chatId": "$chatId", "offer": "$offer", "messageId": "$messageId"}';
+  }
+
+  @override
+  bool operator ==(covariant VideoCallViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key &&
+        other.user == user &&
+        other.chatId == chatId &&
+        other.offer == offer &&
+        other.messageId == messageId;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^
+        user.hashCode ^
+        chatId.hashCode ^
+        offer.hashCode ^
+        messageId.hashCode;
+  }
+}
+
+class VideoCallOfferViewArguments {
+  const VideoCallOfferViewArguments({
+    this.key,
+    required this.friend,
+    required this.chatId,
+    required this.messageId,
+    required this.offer,
+    this.offerAccepted = false,
+    required this.receiverId,
+  });
+
+  final _i17.Key? key;
+
+  final _i20.User friend;
+
+  final String chatId;
+
+  final String messageId;
+
+  final String offer;
+
+  final bool offerAccepted;
+
+  final String receiverId;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "friend": "$friend", "chatId": "$chatId", "messageId": "$messageId", "offer": "$offer", "offerAccepted": "$offerAccepted", "receiverId": "$receiverId"}';
+  }
+
+  @override
+  bool operator ==(covariant VideoCallOfferViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key &&
+        other.friend == friend &&
+        other.chatId == chatId &&
+        other.messageId == messageId &&
+        other.offer == offer &&
+        other.offerAccepted == offerAccepted &&
+        other.receiverId == receiverId;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^
+        friend.hashCode ^
+        chatId.hashCode ^
+        messageId.hashCode ^
+        offer.hashCode ^
+        offerAccepted.hashCode ^
+        receiverId.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i21.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -418,9 +559,9 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToBottomNavbarViewRoute({
-    _i15.Key? key,
+    _i17.Key? key,
     required int viewIndex,
-    _i16.NotificationAction? notificationAction,
+    _i18.NotificationAction? notificationAction,
     Map<String, String>? data,
     int? routerId,
     bool preventDuplicates = true,
@@ -455,7 +596,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToLoginViewRoute({
-    _i15.Key? key,
+    _i17.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -471,7 +612,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToRegisterViewRoute({
-    _i15.Key? key,
+    _i17.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -487,8 +628,8 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToSinglePostViewRoute({
-    _i15.Key? key,
-    required _i17.Post post,
+    _i17.Key? key,
+    required _i19.Post post,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -518,8 +659,8 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToPublicProfileViewRoute({
-    _i15.Key? key,
-    required _i18.User userPublicProfile,
+    _i17.Key? key,
+    required _i20.User userPublicProfile,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -578,8 +719,8 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToIndividualChatViewRoute({
-    _i15.Key? key,
-    required _i18.User friend,
+    _i17.Key? key,
+    required _i20.User friend,
     required String chatId,
     int? routerId,
     bool preventDuplicates = true,
@@ -610,6 +751,60 @@ extension NavigatorStateExtension on _i19.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToVideoCallViewRoute({
+    _i17.Key? key,
+    required _i20.User user,
+    required String chatId,
+    String? offer,
+    String? messageId,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.videoCallViewRoute,
+        arguments: VideoCallViewArguments(
+            key: key,
+            user: user,
+            chatId: chatId,
+            offer: offer,
+            messageId: messageId),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToVideoCallOfferViewRoute({
+    _i17.Key? key,
+    required _i20.User friend,
+    required String chatId,
+    required String messageId,
+    required String offer,
+    bool offerAccepted = false,
+    required String receiverId,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.videoCallOfferViewRoute,
+        arguments: VideoCallOfferViewArguments(
+            key: key,
+            friend: friend,
+            chatId: chatId,
+            messageId: messageId,
+            offer: offer,
+            offerAccepted: offerAccepted,
+            receiverId: receiverId),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -625,9 +820,9 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithBottomNavbarViewRoute({
-    _i15.Key? key,
+    _i17.Key? key,
     required int viewIndex,
-    _i16.NotificationAction? notificationAction,
+    _i18.NotificationAction? notificationAction,
     Map<String, String>? data,
     int? routerId,
     bool preventDuplicates = true,
@@ -662,7 +857,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithLoginViewRoute({
-    _i15.Key? key,
+    _i17.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -678,7 +873,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithRegisterViewRoute({
-    _i15.Key? key,
+    _i17.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -694,8 +889,8 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithSinglePostViewRoute({
-    _i15.Key? key,
-    required _i17.Post post,
+    _i17.Key? key,
+    required _i19.Post post,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -725,8 +920,8 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithPublicProfileViewRoute({
-    _i15.Key? key,
-    required _i18.User userPublicProfile,
+    _i17.Key? key,
+    required _i20.User userPublicProfile,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -785,8 +980,8 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithIndividualChatViewRoute({
-    _i15.Key? key,
-    required _i18.User friend,
+    _i17.Key? key,
+    required _i20.User friend,
     required String chatId,
     int? routerId,
     bool preventDuplicates = true,
@@ -811,6 +1006,60 @@ extension NavigatorStateExtension on _i19.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.newMessageViewRoute,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithVideoCallViewRoute({
+    _i17.Key? key,
+    required _i20.User user,
+    required String chatId,
+    String? offer,
+    String? messageId,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.videoCallViewRoute,
+        arguments: VideoCallViewArguments(
+            key: key,
+            user: user,
+            chatId: chatId,
+            offer: offer,
+            messageId: messageId),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithVideoCallOfferViewRoute({
+    _i17.Key? key,
+    required _i20.User friend,
+    required String chatId,
+    required String messageId,
+    required String offer,
+    bool offerAccepted = false,
+    required String receiverId,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.videoCallOfferViewRoute,
+        arguments: VideoCallOfferViewArguments(
+            key: key,
+            friend: friend,
+            chatId: chatId,
+            messageId: messageId,
+            offer: offer,
+            offerAccepted: offerAccepted,
+            receiverId: receiverId),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

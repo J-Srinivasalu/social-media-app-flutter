@@ -43,7 +43,9 @@ class ChatMessage {
   String? id;
   String? chat;
   User? sender;
+  User? receiver;
   String? content;
+  String? offer;
   String? status;
   DateTime? updatedAt;
   DateTime? createdAt;
@@ -51,6 +53,8 @@ class ChatMessage {
     this.id,
     this.chat,
     this.sender,
+    this.receiver,
+    this.offer,
     this.content,
     this.status,
     this.updatedAt,
@@ -66,12 +70,18 @@ class ChatMessage {
     var sender = senderJson.runtimeType == String
         ? User(id: senderJson)
         : User.fromMap(json["sender"]);
+    final receiverJson = json["sender"];
+    var receiver = receiverJson.runtimeType == String
+        ? User(id: receiverJson)
+        : User.fromMap(json["sender"]);
     return ChatMessage(
       id: json["_id"],
       chat: json["chat"],
       sender: sender,
+      receiver: receiver,
       content: json["content"],
       status: json["status"],
+      offer: json["offer"],
       updatedAt: DateTime.parse(json["updatedAt"]),
       createdAt: DateTime.parse(json["createdAt"]),
     );
@@ -81,6 +91,8 @@ class ChatMessage {
         "_id": id,
         "chat": chat,
         "sender": sender?.toMap(),
+        "receiver": receiver?.toMap(),
+        "offer": offer,
         "content": content,
         "status": status,
         "updatedAt": updatedAt?.toIso8601String(),

@@ -259,6 +259,30 @@ class ApiService {
     return await _getRequest(messageEndpoint, params: params);
   }
 
+  Future<ServerResponse> getMessage(
+    String messageId,
+  ) async {
+    return await _getRequest("$messageEndpoint/$messageId");
+  }
+
+  Future<ServerResponse> sendVideoCallRequest(
+      String chatId, String offer) async {
+    final body = {
+      "chatId": chatId,
+      "offer": offer,
+    };
+    return await _postRequest(videoCallRequestEndpoint, body);
+  }
+
+  Future<ServerResponse> rejectVideoCallRequest(
+      String receiverId, String messageId) async {
+    final body = {
+      "receiverId": receiverId,
+      "messageId": messageId,
+    };
+    return await _postRequest(videoCallRejectedEndpoint, body);
+  }
+
   Future<ServerResponse> _checkServerResponse(
       {required http.Response response,
       required Future<ServerResponse> Function() retryApiCall}) async {
@@ -267,7 +291,8 @@ class ApiService {
     final data = ResponseGeneral.fromJson(
         json.decode(response.body), response.statusCode);
     if (data.detail?.success != true) {
-      if (response.statusCode == 401) {
+      if (response.statusCode == 401 &&
+          data.detail?.message != "Refresh token expired or already used") {
         debugPrint("Access token expire");
         final refreshResponse = await refreshAccessToken();
         debugPrint(

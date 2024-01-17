@@ -28,8 +28,11 @@ dependencies:
   flutter_local_notifications: ^16.2.0
   socket_io_client: ^2.0.3+1
   connectivity_plus: ^5.0.2
+  flutter_webrtc: ^0.9.34
+  sdp_transform: ^0.3.2
 
   cupertino_icons: ^1.0.2
+  flutter_system_ringtones: ^0.0.6
 
 dev_dependencies:
   flutter_test:
@@ -43,8 +46,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/image/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

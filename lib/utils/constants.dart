@@ -33,5 +33,8 @@ final chatEndpoint = "$rootApiUrl/chat";
 final messageEndpoint = "$rootApiUrl/chat/message";
 // final messageStatusEndpoint = "$rootApiUrl/chat//message/status";
 
+final videoCallRequestEndpoint = "$rootApiUrl/chat/call/video/offer";
+final videoCallRejectedEndpoint = "$rootApiUrl/chat/call/video/reject";
+
 const LOCAL_STORAGE_KEY_TOKEN = "token";
 const LOCAL_STORAGE_KEY_REFRESH_TOKEN = "refreshToken";

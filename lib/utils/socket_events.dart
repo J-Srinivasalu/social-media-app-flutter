@@ -11,6 +11,14 @@ class ChatEventEnum {
   static const String MESSAGE_DELIVERED = 'messageDelivered';
   static const String USER_ONLINE_EVENT = 'userOnline';
   static const String USER_OFFLINE_EVENT = 'userOffline';
+  static const String VIDEO_CALL_OFFER_EVENT = 'videoCallOffer';
+  static const String VIDEO_CALL_FETCH_OFFER_EVENT = 'videoCallFetchOffer';
+  static const String VIDEO_CALL_ACCEPT_EVENT = 'videoCallAccept';
+  static const String VIDEO_CALL_REJECT_EVENT = 'videoCallReject';
+  static const String VIDEO_CALL_MISSED_EVENT = 'videoCallMissed';
+  static const String VIDEO_CALL_SET_DESC_EVENT = 'videoCallSetDesc';
+  static const String VIDEO_CALL_ADD_CONDIDATE_EVENT = 'videoCallAddCondidate';
+  static const String VIDEO_CALL_ENDED_EVENT = 'videoCallEnded';
 }
 
 class MessageStatus {
