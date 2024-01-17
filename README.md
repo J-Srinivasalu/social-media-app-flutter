@@ -151,7 +151,7 @@ flutter run --flavor dev -t lib/main_dev.dart
 | <img src="screenshots/last_seen.jpeg" alt="last seen" width="200"/> | <img src="screenshots/no_internet.jpeg" alt="last seen" width="200"/> | <img src="screenshots/video_call1.jpeg" alt="send video call request" width="200"/> | <img src="screenshots/video_call2.jpeg" alt="receive video call requets" width="200"/> |
 
 |         Video Call       |       Video Call        |       Video Call         |
-| :------------------------: | :---------------------------: | :-------------------------------: | :--------------------------------: |
-| <img src="screenshots/video_call3.jpg" alt="video call notification" width="200"/> | <img src="screenshots/video_call4.jpeg" alt="incoming video call screen" width="200"/> | <img src="screenshots/video_call_chat.jpeg" alt="video call details in chat" width="200"/> |
+| :------------------------: | :---------------------------: | :-------------------------------: | 
+| <img src="screenshots/video_call3.jpeg" alt="video call notification" width="200"/> | <img src="screenshots/video_call4.jpeg" alt="incoming video call screen" width="200"/> | <img src="screenshots/video_call_chat.jpeg" alt="video call details in chat" width="200"/> |
 
 Feel free to reach out for any questions or feedback. Happy coding!
