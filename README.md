@@ -39,6 +39,10 @@ The mobile app allows users to interact with the social media platform on the go
 
    - Real time video calling using webRTC.
 
+9. **Add more options in Calling:**
+
+   - Like switch camera, mute audio, stop video, etc.
+
 ## Screens
 
 1. **Login:**
@@ -108,11 +112,8 @@ The mobile app allows users to interact with the social media platform on the go
 
    - Make person to person audio calls.
 
-6. **Add more options in Calling:**
 
-   - Like switch camera, mute audio, stop video, etc.
-
-7. **Replay to message:**
+6. **Replay to message:**
 
    - Reply to specific message.
 
