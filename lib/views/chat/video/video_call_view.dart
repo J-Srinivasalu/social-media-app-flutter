@@ -67,6 +67,63 @@ class VideoCallView extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  if (model.callStartedAt != null)
+                    InkWell(
+                      onTap: () {
+                        model.switchCamera();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: CustomColors.primaryColor),
+                        child: const Icon(
+                          Icons.switch_camera_sharp,
+                          color: CustomColors.whiteColor,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                  if (model.callStartedAt != null)
+                    InkWell(
+                      onTap: () {
+                        model.toggleVideoFeed();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: model.isCameraMute
+                                ? CustomColors.pinkishredColor
+                                : CustomColors.primaryColor),
+                        child: Icon(
+                          model.isCameraMute
+                              ? Icons.videocam_off
+                              : Icons.videocam,
+                          color: CustomColors.whiteColor,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                  if (model.callStartedAt != null)
+                    InkWell(
+                      onTap: () {
+                        model.toggleAudio();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: model.isAudioMute
+                                ? CustomColors.pinkishredColor
+                                : CustomColors.primaryColor),
+                        child: Icon(
+                          model.isAudioMute ? Icons.mic_off : Icons.mic,
+                          color: CustomColors.whiteColor,
+                          size: 40,
+                        ),
+                      ),
+                    ),
                   InkWell(
                     onTap: () {
                       model.endCall(chatId, messageId, user.id);

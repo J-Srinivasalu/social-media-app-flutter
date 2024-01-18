@@ -27,6 +27,16 @@ class VideoCallViewModel extends BaseViewModel {
   bool _offer = false;
   bool connectionClosed = false;
 
+  bool _isCameraMute = true;
+
+  bool get isCameraMute => _isCameraMute;
+
+  bool _isAudioMute = true;
+
+  bool get isAudioMute => _isAudioMute;
+
+  String _currentFacingMode = "user";
+
   Timer? timer;
 
   DateTime? callStartedAt;
@@ -187,12 +197,12 @@ class VideoCallViewModel extends BaseViewModel {
     }
   }
 
-  _getUserMedia() async {
+  _setUserMedia() async {
     try {
       final Map<String, dynamic> mediaConstraints = {
         'audio': true,
         'video': {
-          'facingMode': 'user',
+          'facingMode': _currentFacingMode,
         }
       };
 
@@ -228,7 +238,7 @@ class VideoCallViewModel extends BaseViewModel {
         "optional": [],
       };
 
-      _localStream = await _getUserMedia();
+      _localStream = await _setUserMedia();
 
       RTCPeerConnection pc =
           await createPeerConnection(configuration, offerSdpConstraints);
@@ -447,5 +457,44 @@ class VideoCallViewModel extends BaseViewModel {
       debugPrint(error.toString());
       debugPrint(es.toString());
     }
+  }
+
+  void switchCamera() async {
+    try {
+      _currentFacingMode =
+          (_currentFacingMode == 'user') ? 'environment' : 'user';
+      await _localStream?.dispose();
+
+      _localStream = await _setUserMedia();
+
+      (await _peerConnection?.getSenders())?.forEach((sender) {
+        if (sender.track?.kind == "video") {
+          _localStream?.getVideoTracks().forEach((videoTrack) {
+            sender.replaceTrack(videoTrack);
+          });
+        }
+      });
+
+      notifyListeners();
+    } catch (error, es) {
+      debugPrint(error.toString());
+      debugPrint(es.toString());
+    }
+  }
+
+  void toggleVideoFeed() {
+    _isCameraMute = !_isCameraMute;
+    _localStream!.getVideoTracks().forEach((track) {
+      track.enabled = !track.enabled;
+    });
+    notifyListeners();
+  }
+
+  void toggleAudio() {
+    _isAudioMute = !_isAudioMute;
+    _localStream!.getAudioTracks().forEach((track) {
+      track.enabled = !track.enabled;
+    });
+    notifyListeners();
   }
 }
